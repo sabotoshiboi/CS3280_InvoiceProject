@@ -1,0 +1,61 @@
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\GroupProject.csprojAssemblyReference.cache
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\wndSearch.baml
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\MainWindow.g.cs
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\wndSearch.g.cs
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\App.g.cs
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\GroupProject_Content.g.cs
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\GroupProject_MarkupCompile.cache
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\GroupProject_MarkupCompile.lref
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\bin\Debug\Invoice.mdb
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\bin\Debug\GroupProject.exe.config
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\bin\Debug\GroupProject.exe
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\bin\Debug\GroupProject.pdb
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\MainWindow.baml
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\GroupProject.g.resources
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\GroupProject.Properties.Resources.resources
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\GroupProject.csproj.GenerateResource.cache
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\GroupProject.csproj.CoreCompileInputs.cache
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\GroupProject.exe
+C:\Users\brend\OneDrive\Desktop\CS 3280 - Cowder\GroupProject\obj\Debug\GroupProject.pdb
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\bin\Debug\Invoice.mdb
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\bin\Debug\GroupProject.exe.config
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\bin\Debug\GroupProject.exe
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\bin\Debug\GroupProject.pdb
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\GroupProject.csproj.AssemblyReference.cache
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\App.g.cs
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\GroupProject_Content.g.cs
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\GroupProject_MarkupCompile.cache
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\GroupProject_MarkupCompile.lref
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\GroupProject.g.resources
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\GroupProject.Properties.Resources.resources
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\GroupProject.csproj.GenerateResource.cache
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\GroupProject.csproj.CoreCompileInputs.cache
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\GroupProject.exe
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\GroupProject.pdb
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\Search\wndSearch.baml
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\Items\wndItems.g.cs
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\Main\MainWindow.g.cs
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\Search\wndSearch.g.cs
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\Items\wndItems.baml
+C:\Users\ET\Desktop\CS Classes\CS3280\GroupProject\obj\Debug\Main\MainWindow.baml
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\bin\Debug\Invoice.mdb
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\bin\Debug\GroupProject.exe.config
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\bin\Debug\GroupProject.exe
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\bin\Debug\GroupProject.pdb
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\GroupProject.csproj.AssemblyReference.cache
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\Search\wndSearch.baml
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\Items\wndItems.g.cs
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\Main\MainWindow.g.cs
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\Search\wndSearch.g.cs
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\App.g.cs
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\GroupProject_Content.g.cs
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\GroupProject_MarkupCompile.cache
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\GroupProject_MarkupCompile.lref
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\Items\wndItems.baml
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\Main\MainWindow.baml
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\GroupProject.g.resources
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\GroupProject.Properties.Resources.resources
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\GroupProject.csproj.GenerateResource.cache
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\GroupProject.csproj.CoreCompileInputs.cache
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\GroupProject.exe
+C:\Users\tosh_\OneDrive\Desktop\GroupProject\obj\Debug\GroupProject.pdb
