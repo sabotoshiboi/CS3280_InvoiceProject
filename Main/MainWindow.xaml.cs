@@ -20,6 +20,8 @@ namespace GroupProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        wndSearch SearchWindowForm;
+        wndItems ItemWindowForm;
         clsMainSQL sqlClass;
         public MainWindow()
         {
@@ -59,6 +61,10 @@ namespace GroupProject
             * When an invoice is selected on the search window, the selected invoice ID will update in the invoice textbox in the main window
             * The SQL statement will be called to update all the respective data for that invoice including the items list
             */
+            SearchWindowForm = new wndSearch();
+
+            SearchWindowForm.ShowDialog();
+            this.Show();
         }
 
         /// <summary>
@@ -81,6 +87,9 @@ namespace GroupProject
             * 
             * 
             */
+            ItemWindowForm = new wndItems();
+            //ItemWindowForm.ShowDialog();
+
         }
     }
 }
