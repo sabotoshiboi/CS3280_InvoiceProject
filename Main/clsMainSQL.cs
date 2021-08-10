@@ -6,14 +6,14 @@ namespace GroupProject
 {
     public class clsMainSQL
     {
-
-        public int iInvoiceNum;
-        public DateTime InvoiceDate;
-        public double dInvoiceCost;
-
         public string sqlGetInvoice = "SELECT *" +
-                "FROM Invoice " +
-                "WHERE InvoiceID = ";
+                " FROM Invoices " +
+                " WHERE InvoiceNum = ";
+
+        public string sqlGetInvoiceRows = "SELECT Count(*)" +
+                " FROM Invoices " +
+                " WHERE InvoiceNum = ";
+
 
         public string sqlEditInvoice = "Update Invoice";
 
@@ -22,46 +22,54 @@ namespace GroupProject
         public string sqlDeleteInvoice = "DELETE FROM Invoice" +
                 "WHERE InvoiceNum = ";
 
-        public string sqlGetItems = "Select ItemDesc" +
-            "From ItemDesc";
+        public string sqlGetInvoiceItems(int ID) {
+            return "Select i.ItemDesc" +
+            " From ItemDesc i " +
+            " Join LineItems l  ON l.ItemCode = i.ItemCode" +
+            " WHERE l.InvoiceNum = " + ID;
+        }
 
-        public string GetInvoice
+        public string GetInvoice(int ID)
         {
-            get { return sqlGetInvoice + iInvoiceNum + ""; }
-            set { sqlGetInvoice = value; }
+            return sqlGetInvoice + ID;
+        }
+
+        public string GetInvoiceRowCount(int ID)
+        {
+            return sqlGetInvoiceRows + ID;
         }
 
 
-        public string EditInvoice
-        {
-            get { return sqlEditInvoice +
-                "Set InvoiceDate = " + InvoiceDate.Date +
-                "Set TotalCost = " + dInvoiceCost +
-                "Where InvoiceNum = " + iInvoiceNum; }
-            set { sqlEditInvoice = value; }
-        }
+        //public string EditInvoice
+        //{
+        //    get { return sqlEditInvoice +
+        //        "Set InvoiceDate = " + InvoiceDate.Date +
+        //        "Set TotalCost = " + dInvoiceCost +
+        //        "Where InvoiceNum = " + iInvoiceNum; }
+        //    set { sqlEditInvoice = value; }
+        //}
 
-        public string CreateNewInvoice
-        {
-            get {
-                return CreateNewInvoice +
-              "VALUES (" + InvoiceDate.Date + ", " + dInvoiceCost + ")";
-            }
+        //public string CreateNewInvoice
+        //{
+        //    get {
+        //        return CreateNewInvoice +
+        //      "VALUES (" + InvoiceDate.Date + ", " + dInvoiceCost + ")";
+        //    }
 
-            set { CreateNewInvoice = value; }
-        }
+        //    set { CreateNewInvoice = value; }
+        //}
 
-        public string DeleteInvoice
-        {
-            get { return sqlDeleteInvoice + iInvoiceNum; }
-            set { sqlDeleteInvoice = value; }
-        }
+        //public string DeleteInvoice
+        //{
+        //    get { return sqlDeleteInvoice + iInvoiceNum; }
+        //    set { sqlDeleteInvoice = value; }
+        //}
 
-        public string GetItems
-        {
-            get { return sqlGetItems; }
-            set { sqlGetItems = value; }
-        }
+        //public string GetItems
+        //{
+        //    get { return sqlGetItems; }
+        //    set { sqlGetItems = value; }
+        //}
 
 
     }

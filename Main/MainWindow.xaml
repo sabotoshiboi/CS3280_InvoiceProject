@@ -25,8 +25,8 @@
             <Button x:Name="CreateInvoiceButton" Content="Create" HorizontalAlignment="Left" Margin="454,261,0,0" VerticalAlignment="Top" Width="288"/>
             <Button x:Name="DeleteInvoiceButton" Content="Delete" HorizontalAlignment="Left" Margin="630,209,0,0" VerticalAlignment="Top" Width="112"/>
             <Button x:Name="EditInvoiceButton" Content="Edit" HorizontalAlignment="Left" Margin="454,209,0,0" VerticalAlignment="Top" Width="112"/>
-            <TextBox HorizontalAlignment="Left" Height="22" Margin="622,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
-            <TextBox x:Name="InvoiceNumberTextBox" HorizontalAlignment="Left" Height="22" Margin="622,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
+            <TextBox x:Name="InvoiceCostTextBox" HorizontalAlignment="Left" Height="22" Margin="622,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+            <TextBox x:Name="InvoiceNumberTextBox" HorizontalAlignment="Left" Height="22" Margin="622,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="InvoiceNumberTextBox_TextChanged" PreviewTextInput="InvoiceNumberTextBox_PreviewTextInput"/>
             <Label x:Name="InvoiceNumLabel" Content="Invoice Number:" HorizontalAlignment="Left" Margin="492,94,0,0" VerticalAlignment="Top"/>
             <Label x:Name="InvoiceDateLabel" Content="Invoice Date:" HorizontalAlignment="Left" Margin="492,126,0,0" VerticalAlignment="Top"/>
             <Label x:Name="InvoiceCostLabel" Content="Total Cost:" HorizontalAlignment="Left" Margin="492,163,0,0" VerticalAlignment="Top"/>

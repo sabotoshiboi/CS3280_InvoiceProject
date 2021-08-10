@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
+
 
 namespace GroupProject
 {
@@ -23,6 +25,7 @@ namespace GroupProject
         wndSearch SearchWindowForm;
         wndItems ItemWindowForm;
         clsMainSQL sqlClass;
+        clsMainLogic busLog = new clsMainLogic();
         public MainWindow()
         {
             InitializeComponent();
@@ -90,6 +93,27 @@ namespace GroupProject
             ItemWindowForm = new wndItems();
             //ItemWindowForm.ShowDialog();
 
+        }
+
+        private void InvoiceNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (InvoiceNumberTextBox.Text != "")
+            {
+                busLog.GetInvoiceByID(Int32.Parse(InvoiceNumberTextBox.Text));
+                InvoiceDatePicker.SelectedDate = busLog.invoicedate;
+                InvoiceCostTextBox.Text = "$ " + busLog.invoicecost.ToString();
+
+                for(int i = 0; i < busLog.listItems.Count; i++)
+                {
+                    ItemsListComboBox.Items.Add(busLog.listItems[i]);
+                }
+            }
+        }
+
+        private void InvoiceNumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }
