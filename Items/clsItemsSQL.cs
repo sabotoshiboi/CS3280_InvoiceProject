@@ -105,7 +105,7 @@ namespace GroupProject
         /// <param name="sItemCode"></param>
         /// <param name="sCost"></param>
         /// <returns></returns>
-        public string UpdateItemData(char sItemDesc, char sItemCode, double sCost)
+        public string UpdateItemData(string sItemDesc, string sItemCode, double sCost)
         {
             try
             {
@@ -125,7 +125,7 @@ namespace GroupProject
         /// <param name="sItemDesc"></param>
         /// <param name="sCost"></param>
         /// <returns></returns>
-        public string AddNewItem(char sItemCode, char sItemDesc, double sCost)
+        public string AddNewItem(string sItemCode, string sItemDesc, double sCost)
         {
             try
             {
@@ -144,7 +144,7 @@ namespace GroupProject
         /// </summary>
         /// <param name="sItemCode"></param>
         /// <returns></returns>
-        public string DeleteItem(char sItemCode)
+        public string DeleteItem(string sItemCode)
         {
             try
             {
