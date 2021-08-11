@@ -73,8 +73,12 @@ namespace GroupProject
         {
             try
             {
-                clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
-                clsItemsSQL.DeleteItem(Item.ItemCode);
+                //if (FIND OUT IF ITEM IS ON ACTIVE INVOICE HERE!!!!!!!!!!!)
+                {
+                    //clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
+                    //clsItemsSQL.DeleteItem(Item.ItemCode);
+                }
+                
             }
             catch (Exception ex)
             {
