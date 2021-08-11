@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,45 +19,72 @@ namespace GroupProject
     /// <summary>
     /// Interaction logic for wndItems.xaml
     /// </summary>
-    public partial class wndItems : Page
+    public partial class wndItems : Window
     {
+        clsItemsSQL clsItemsSQL;
         public wndItems()
         {
             InitializeComponent();
         }
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            //itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
-        }
-
-        private void clearButton_Click(object sender, RoutedEventArgs e)
-        {
-            //this button will clear user specifications from dropdowns 
+            try
+            {
+                itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
+            }
+            catch (Exception ex)
+            {
+                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            //this button will add a new item to the database
+            try
+            {
+                
+               // clsItemsSQL.AddNewItem();
+            }
+            catch (Exception ex)
+            {
+                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+            } 
         }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            //this button will allow the user to edit an item
+            try
+            {
+                clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
+            }
+            catch (Exception ex)
+            {
+                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         private void deleteButton_Click(object sender, RoutedEventArgs e)
         {
-            //this button will allow a user to delete an item as long as its not being used in an active invoice 
-        }
-
-        private void invoiceNumDrop_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //this dropdown will list invoices
+            try
+            {
+                //this button will allow a user to delete an item as long as its not being used in an active invoice
+            }
+            catch (Exception ex)
+            {
+                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         private void itemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            try
+            {
 
+            }
+            catch (Exception ex)
+            {
+                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
         }
     }
 }
