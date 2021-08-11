@@ -56,5 +56,15 @@ namespace GroupProject
             return "Update Invoices Set TotalCost = TotalCost + " + Amount + " Where InvoiceNum = " + InvoiceID;
         }
 
+        public string DeleteInvoiceFromInvoice(int InvoiceID)
+        {
+            return "DELETE From Invoices WHERE InvoiceNum = " + InvoiceID;
+        }
+
+        public string DeleteInvoiceFromLine(int InvoiceID)
+        {
+            return "DELETE From LineItems WHERE InvoiceNum = " + InvoiceID;
+        }
+
     }
 }

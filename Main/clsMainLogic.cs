@@ -17,6 +17,8 @@ namespace GroupProject
         public clsMainSQL sqlString = new clsMainSQL();
         public List<DataRow> itemList = new List<DataRow>();
 
+        public bool editing = false;
+
         string sSQL;
         public string SSQL
         {
@@ -106,6 +108,14 @@ namespace GroupProject
         public void AddToTotalCost(int InvoiceID, int Amount)
         {
             SSQL = sqlString.AddToTotal(InvoiceID, Amount);
+            db.ExecuteNonQuery(SSQL);
+        }
+
+        public void RemoveInvoice(int InvoiceID)
+        {
+            SSQL = sqlString.DeleteInvoiceFromLine(InvoiceID);
+            db.ExecuteNonQuery(SSQL);
+            SSQL = sqlString.DeleteInvoiceFromInvoice(InvoiceID);
             db.ExecuteNonQuery(SSQL);
         }
     }

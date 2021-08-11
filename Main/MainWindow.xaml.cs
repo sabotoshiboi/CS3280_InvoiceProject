@@ -42,6 +42,12 @@ namespace GroupProject
             {
                 ItemsListComboBox.Items.Add(busLog.itemList[i][1]);
             }
+
+            CreateInvoiceButton.IsEnabled = false;
+            EditInvoiceButton.IsEnabled = false;
+            DeleteInvoiceButton.IsEnabled = false;
+
+            InvoiceNumberTextBox.Focus();
         }
 
         /// <summary>
@@ -99,7 +105,7 @@ namespace GroupProject
             * 
             */
             ItemWindowForm = new wndItems();
-            //ItemWindowForm.ShowDialog();
+            ItemWindowForm.ShowDialog();
 
         }
 
@@ -113,6 +119,19 @@ namespace GroupProject
             AddButton.IsEnabled = false;
             RemoveButton.IsEnabled = false;
 
+            if (InvoiceItemsDataGrid.Items.Count > 1)
+            {
+                CreateInvoiceButton.IsEnabled = false;
+                DeleteInvoiceButton.IsEnabled = true;
+                EditInvoiceButton.IsEnabled = true;
+            }
+            else
+            {
+                CreateInvoiceButton.IsEnabled = true;
+                DeleteInvoiceButton.IsEnabled = false;
+                EditInvoiceButton.IsEnabled = false;
+            }
+
         }
 
         private void InvoiceNumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -123,7 +142,7 @@ namespace GroupProject
 
         private void InvoiceItemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(InvoiceItemsDataGrid.SelectedIndex >= 0)
+            if (InvoiceItemsDataGrid.SelectedIndex >= 0 && busLog.editing)
             {
                 RemoveButton.IsEnabled = true;
             }
@@ -160,13 +179,54 @@ namespace GroupProject
         {
             if(ItemsListComboBox.SelectedIndex >= 0 )
             {
-                if (InvoiceItemsDataGrid.Items.Count > 0)
-                {
-                    AddButton.IsEnabled = true;
-                }
-
-                ItemCostTextBox.Text = busLog.itemList[ItemsListComboBox.SelectedIndex][2].ToString();
+                ItemCostTextBox.Text = "$" + busLog.itemList[ItemsListComboBox.SelectedIndex][2].ToString();
             }
+        }
+
+        private void DeleteInvoiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            var choice = MessageBox.Show("Delete this Invoice?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (choice == MessageBoxResult.Yes)
+            {
+                busLog.RemoveInvoice(Int32.Parse(InvoiceNumberTextBox.Text));
+                RefreshDataGrid();
+                CreateInvoiceButton.IsEnabled = true;
+                DeleteInvoiceButton.IsEnabled = false;
+                EditInvoiceButton.IsEnabled = false;
+            }
+        }
+
+        private void EditInvoiceButton_Click(object sender, RoutedEventArgs e)
+        {
+            busLog.editing = true;
+            CreateInvoiceButton.IsEnabled = false;
+            DeleteInvoiceButton.IsEnabled = false;
+            EditInvoiceButton.IsEnabled = false;
+            SaveButton.IsEnabled = true;
+            InvoiceNumberTextBox.IsEnabled = false;
+
+            if(ItemsListComboBox.SelectedIndex > 0)
+            {
+                AddButton.IsEnabled = true;
+            }
+
+            if(InvoiceItemsDataGrid.SelectedIndex > 0)
+            {
+                RemoveButton.IsEnabled = true;
+            }
+        }
+
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            busLog.editing = false;
+            CreateInvoiceButton.IsEnabled = true;
+            DeleteInvoiceButton.IsEnabled = true;
+            EditInvoiceButton.IsEnabled = true;
+            SaveButton.IsEnabled = false;
+            InvoiceNumberTextBox.IsEnabled = true;
+
+            AddButton.IsEnabled = false;
+            RemoveButton.IsEnabled = false;
         }
     }
 }

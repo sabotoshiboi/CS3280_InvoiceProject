@@ -20,11 +20,13 @@
 
             <GroupBox x:Name="InvoiceGroupBox" Header="Invoice" HorizontalAlignment="Left" Height="336" Margin="435,14,0,0" VerticalAlignment="Top" Width="347"/>
 
-            <GroupBox Header="Items" HorizontalAlignment="Left" Height="336" Margin="25,14,0,0" VerticalAlignment="Top" Width="391"/>
+            <GroupBox Header="Items" HorizontalAlignment="Left" Height="336" Margin="25,14,0,0" VerticalAlignment="Top" Width="391">
+                <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="10,211,0,0" VerticalAlignment="Top" Width="178" IsEnabled="False" Click="SaveButton_Click"/>
+            </GroupBox>
 
             <Button x:Name="CreateInvoiceButton" Content="Create" HorizontalAlignment="Left" Margin="454,261,0,0" VerticalAlignment="Top" Width="288"/>
-            <Button x:Name="DeleteInvoiceButton" Content="Delete" HorizontalAlignment="Left" Margin="630,209,0,0" VerticalAlignment="Top" Width="112"/>
-            <Button x:Name="EditInvoiceButton" Content="Edit" HorizontalAlignment="Left" Margin="454,209,0,0" VerticalAlignment="Top" Width="112"/>
+            <Button x:Name="DeleteInvoiceButton" Content="Delete" HorizontalAlignment="Left" Margin="630,209,0,0" VerticalAlignment="Top" Width="112" Click="DeleteInvoiceButton_Click"/>
+            <Button x:Name="EditInvoiceButton" Content="Edit" HorizontalAlignment="Left" Margin="454,209,0,0" VerticalAlignment="Top" Width="112" Click="EditInvoiceButton_Click"/>
             <TextBox x:Name="InvoiceCostTextBox" HorizontalAlignment="Left" Height="22" Margin="622,167,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
             <TextBox x:Name="InvoiceNumberTextBox" HorizontalAlignment="Left" Height="22" Margin="622,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="InvoiceNumberTextBox_TextChanged" PreviewTextInput="InvoiceNumberTextBox_PreviewTextInput"/>
             <Label x:Name="InvoiceNumLabel" Content="Invoice Number:" HorizontalAlignment="Left" Margin="492,94,0,0" VerticalAlignment="Top"/>
