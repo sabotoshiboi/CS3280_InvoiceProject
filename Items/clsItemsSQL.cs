@@ -1,13 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GroupProject
 {
     class clsItemsSQL
     {
+        private clsDataAccess db;
+        /// <summary>
+        /// this method helps display information for potential errors
+        /// </summary>
+        /// <param name="sClass"></param>
+        /// <param name="sMethod"></param>
+        /// <param name="sMessage"></param>
+        public void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
+            }
+        }
 
         /// <summary>
         /// this method will return the data from a specific invoice number on the LineItems table
@@ -17,18 +38,64 @@ namespace GroupProject
         public string SelectInvoiceData(int sInvoiceNum)
 
         {
-            string sSQL = "SELECT DISTINCT(sInvoiceNum) FROM LineItems WHERE ItemCode =" + sInvoiceNum;
-            return sSQL;
+            try
+            {
+                string sSQL = "SELECT DISTINCT(sInvoiceNum) FROM LineItems WHERE ItemCode =" + sInvoiceNum;
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
         /// this method will return all item information from ItemDesc table
         /// </summary>
         /// <returns></returns>
-        public string SelectItemData()
+        public List<clsItemsLogic> SelectItemData()
         {
-            string sSQL = "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
-            return sSQL;
+            try
+            {
+                //create data set
+                DataSet ds;
+
+                //number of return values
+                int iRet = 0;
+
+                //create items list
+                List<clsItemsLogic> lstItems = new List<clsItemsLogic>();
+
+                //create the string variable holding the SQL statement to get flgiths
+                string sSQL;
+
+                //creating a clsFlight object to hold flight dataset
+                clsItemsLogic clsItemsLogic;
+
+                //defining a database to hold the row slected by the SQL
+                db = new clsDataAccess();
+
+                sSQL = "SELECT ItemCode, ItemDesc, Cost FROM ItemDesc";
+
+                ds = db.ExecuteSQLStatement(sSQL, ref iRet);
+
+                //loop through all the values
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    //create list of flights
+                    clsItemsLogic = new clsItemsLogic();
+                    clsItemsLogic.ItemCode = (string)ds.Tables[0].Rows[i][0];
+                    clsItemsLogic.ItemDesc = ds.Tables[0].Rows[i]["ItemDesc"].ToString();
+                    clsItemsLogic.ItemCost = Convert.ToDouble(ds.Tables[0].Rows[i]["Cost"]);
+                    lstItems.Add(clsItemsLogic);
+                }
+
+                return lstItems;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -38,10 +105,17 @@ namespace GroupProject
         /// <param name="sItemCode"></param>
         /// <param name="sCost"></param>
         /// <returns></returns>
-        public string UpdateItemData(char sItemDesc, char sItemCode, double sCost)
+        public string UpdateItemData(string sItemDesc, string sItemCode, double sCost)
         {
-            string sSQL = "UPDATE ItemDesc SET ItemDesc = " + sItemDesc + ", Cost = " + sCost + " WHERE ItemCode =" + sItemCode;
-            return sSQL;
+            try
+            {
+                string sSQL = "UPDATE ItemDesc SET ItemDesc = " + sItemDesc + ", Cost = " + sCost + " WHERE ItemCode =" + sItemCode;
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            } 
         }
 
         /// <summary>
@@ -51,10 +125,18 @@ namespace GroupProject
         /// <param name="sItemDesc"></param>
         /// <param name="sCost"></param>
         /// <returns></returns>
-        public string AddNewItem(char sItemCode, char sItemDesc, double sCost)
+        public string AddNewItem(string sItemCode, string sItemDesc, double sCost)
         {
-            string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Cost) VALUES(" + sItemCode + ", " + sItemDesc + ", " + sCost + ")";
-            return sSQL;
+            try
+            {
+                string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Cost) VALUES(" + sItemCode + ", " + sItemDesc + ", " + sCost + ")";
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+            
         }
 
         /// <summary>
@@ -62,10 +144,18 @@ namespace GroupProject
         /// </summary>
         /// <param name="sItemCode"></param>
         /// <returns></returns>
-        public string DeleteItem(char sItemCode)
+        public string DeleteItem(string sItemCode)
         {
-            string sSQL = "DELETE FROM ItemDesc WHERE ItemCode = " + sItemCode;
-            return sSQL;
+            try
+            {
+                string sSQL = "DELETE FROM ItemDesc WHERE ItemCode = " + sItemCode;
+                return sSQL;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+            
         }
     }
 }

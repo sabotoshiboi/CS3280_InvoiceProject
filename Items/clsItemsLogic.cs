@@ -7,24 +7,33 @@ using System.Windows;
 
 namespace GroupProject
 {
-    class clsItemsLogic
+    public class clsItemsLogic
     {
-        /// <summary>
-        /// this method helps display information for potential errors
-        /// </summary>
-        /// <param name="sClass"></param>
-        /// <param name="sMethod"></param>
-        /// <param name="sMessage"></param>
-        public void HandleError(string sClass, string sMethod, string sMessage)
+        private string itemCode;
+        private string itemDesc;
+        private double itemCost;
+
+        public string ItemCode
         {
-            try
-            {
-                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
-            }
-            catch (Exception ex)
-            {
-                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
-            }
+            get { return ItemCode; }
+            set { itemCode = value; }
+        }
+
+        public string ItemDesc
+        {
+            get { return ItemDesc; }
+            set { itemDesc = value; }
+        }
+
+        public double ItemCost
+        {
+            get { return ItemCost; }
+            set { itemCost = value; }
+        }
+
+        public override string ToString()
+        {
+            return ItemCode + " | " + ItemDesc + " | " + ItemCost;
         }
     }
 }

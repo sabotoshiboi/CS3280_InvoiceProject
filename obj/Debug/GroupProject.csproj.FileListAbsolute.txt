@@ -80,3 +80,24 @@ C:\Users\tosh_\OneDrive\Documents\GitHub\CS3280_InvoiceProject\obj\Debug\GroupPr
 C:\Users\tosh_\OneDrive\Documents\GitHub\CS3280_InvoiceProject\obj\Debug\GroupProject.csproj.CoreCompileInputs.cache
 C:\Users\tosh_\OneDrive\Documents\GitHub\CS3280_InvoiceProject\obj\Debug\GroupProject.exe
 C:\Users\tosh_\OneDrive\Documents\GitHub\CS3280_InvoiceProject\obj\Debug\GroupProject.pdb
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject.csproj.AssemblyReference.cache
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\Search\wndSearch.baml
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\Items\wndItems.g.cs
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\Main\MainWindow.g.cs
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\Search\wndSearch.g.cs
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\App.g.cs
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject_Content.g.cs
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject_MarkupCompile.cache
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject_MarkupCompile.lref
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject.exe
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject.pdb
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\bin\Debug\Invoice.mdb
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\bin\Debug\GroupProject.exe.config
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\bin\Debug\GroupProject.exe
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\bin\Debug\GroupProject.pdb
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\Items\wndItems.baml
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\Main\MainWindow.baml
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject.g.resources
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject.Properties.Resources.resources
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject.csproj.GenerateResource.cache
+C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject.csproj.CoreCompileInputs.cache
