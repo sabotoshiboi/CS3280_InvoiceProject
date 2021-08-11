@@ -12,10 +12,10 @@ namespace GroupProject
 {
     public class clsMainLogic
     {
-        DataSet ds = new DataSet();
-        clsDataAccess db = new clsDataAccess();
-        clsMainSQL sqlString = new clsMainSQL();
-        public List<string> listItems = new List<string>();
+        public DataSet ds = new DataSet();
+        public clsDataAccess db = new clsDataAccess();
+        public clsMainSQL sqlString = new clsMainSQL();
+        public List<DataRow> itemList = new List<DataRow>();
 
         string sSQL;
         public string SSQL
@@ -25,6 +25,12 @@ namespace GroupProject
         }
 
         int IRet;
+
+        public int iret
+        {
+            get { return IRet; }
+            set { IRet = value; }
+        }
 
         int InvoiceID;
 
@@ -61,13 +67,6 @@ namespace GroupProject
 
                 SSQL = sqlString.sqlGetInvoiceItems(ID);
                 ds = db.ExecuteSQLStatement(SSQL, ref IRet);
-
-                for(int i = 0; i < IRet; i++)
-                {
-                    listItems.Add(ds.Tables[0].Rows[0][i].ToString());
-                }
-
-
                 
             }
             else
@@ -77,6 +76,37 @@ namespace GroupProject
                 invoicecost = 0;
             }
 
+        }
+
+        public void RemoveItemFromGrid(int InvoiceID, int LineItemNumber)
+        {
+            SSQL = sqlString.RemoveFromDataGrid(LineItemNumber, InvoiceID);
+
+            db.ExecuteNonQuery(SSQL);
+        }
+
+        public void SubtractFromTotalCost(int InvoiceID, int Amount) 
+        {
+            SSQL = sqlString.SubtractFromTotal(InvoiceID, Amount);
+            db.ExecuteNonQuery(SSQL);
+        }
+
+        public void UpdateItemList()
+        {
+            SSQL = sqlString.getItemList;
+            ds = db.ExecuteSQLStatement(SSQL, ref IRet);
+        }
+
+       public void InsertItemIntoInvoice(int InvoiceID, int LineNum, string ItemCode)
+        {
+            SSQL = sqlString.InsertItemIntoInvoice(InvoiceID, LineNum, ItemCode);
+            db.ExecuteNonQuery(SSQL);
+        }
+
+        public void AddToTotalCost(int InvoiceID, int Amount)
+        {
+            SSQL = sqlString.AddToTotal(InvoiceID, Amount);
+            db.ExecuteNonQuery(SSQL);
         }
     }
 }

@@ -31,9 +31,17 @@ namespace GroupProject
             InitializeComponent();
             sqlClass = new clsMainSQL();
 
-            //A SQL statement will load the combo box with all the needed items so that they can be added to
-            //a selected invoice when it is selected.
+            busLog.UpdateItemList();
 
+            for(int i = 0; i < busLog.iret; i++)
+            {
+                busLog.itemList.Add(busLog.ds.Tables[0].Rows[i]);
+            }
+
+            for(int i = 0; i < busLog.itemList.Count; i++)
+            {
+                ItemsListComboBox.Items.Add(busLog.itemList[i][1]);
+            }
         }
 
         /// <summary>
@@ -99,21 +107,66 @@ namespace GroupProject
         {
             if (InvoiceNumberTextBox.Text != "")
             {
-                busLog.GetInvoiceByID(Int32.Parse(InvoiceNumberTextBox.Text));
-                InvoiceDatePicker.SelectedDate = busLog.invoicedate;
-                InvoiceCostTextBox.Text = "$ " + busLog.invoicecost.ToString();
-
-                for(int i = 0; i < busLog.listItems.Count; i++)
-                {
-                    ItemsListComboBox.Items.Add(busLog.listItems[i]);
-                }
+                RefreshDataGrid();
             }
+
+            AddButton.IsEnabled = false;
+            RemoveButton.IsEnabled = false;
+
         }
 
         private void InvoiceNumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void InvoiceItemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(InvoiceItemsDataGrid.SelectedIndex >= 0)
+            {
+                RemoveButton.IsEnabled = true;
+            }
+        }
+
+        private void RemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            busLog.RemoveItemFromGrid(Int32.Parse(InvoiceNumberTextBox.Text), Int32.Parse(busLog.ds.Tables[0].Rows[InvoiceItemsDataGrid.SelectedIndex][3].ToString()));
+            busLog.SubtractFromTotalCost(Int32.Parse(InvoiceNumberTextBox.Text), Int32.Parse(busLog.ds.Tables[0].Rows[InvoiceItemsDataGrid.SelectedIndex][2].ToString()));
+            RefreshDataGrid();
+            
+        }
+
+        private void RefreshDataGrid()
+        {
+            busLog.GetInvoiceByID(Int32.Parse(InvoiceNumberTextBox.Text));
+            InvoiceDatePicker.SelectedDate = busLog.invoicedate;
+            InvoiceCostTextBox.Text = "$ " + busLog.invoicecost.ToString();
+
+            InvoiceItemsDataGrid.ItemsSource = busLog.ds.Tables[0].DefaultView;
+
+
+        }
+
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            busLog.InsertItemIntoInvoice(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceItemsDataGrid.Items.Count, busLog.itemList[ItemsListComboBox.SelectedIndex][0].ToString());
+            busLog.AddToTotalCost(Int32.Parse(InvoiceNumberTextBox.Text), Int32.Parse(busLog.itemList[ItemsListComboBox.SelectedIndex][2].ToString()));
+            RefreshDataGrid();
+
+        }
+
+        private void ItemsListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(ItemsListComboBox.SelectedIndex >= 0 )
+            {
+                if (InvoiceItemsDataGrid.Items.Count > 0)
+                {
+                    AddButton.IsEnabled = true;
+                }
+
+                ItemCostTextBox.Text = busLog.itemList[ItemsListComboBox.SelectedIndex][2].ToString();
+            }
         }
     }
 }

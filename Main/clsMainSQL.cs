@@ -14,19 +14,16 @@ namespace GroupProject
                 " FROM Invoices " +
                 " WHERE InvoiceNum = ";
 
+        string GetItemList = "Select * From ItemDesc";
 
-        public string sqlEditInvoice = "Update Invoice";
-
-        public string sqlCreateNewInvoice = "Insert into Invoice";
-
-        public string sqlDeleteInvoice = "DELETE FROM Invoice" +
-                "WHERE InvoiceNum = ";
+        public string getItemList
+        {
+            get { return GetItemList; }
+            set { GetItemList = value; }
+        }
 
         public string sqlGetInvoiceItems(int ID) {
-            return "Select i.ItemDesc" +
-            " From ItemDesc i " +
-            " Join LineItems l  ON l.ItemCode = i.ItemCode" +
-            " WHERE l.InvoiceNum = " + ID;
+            return "SELECT LineItems.ItemCode, ItemDesc.ItemDesc, ItemDesc.Cost, LineItems.LineItemNum FROM LineItems, ItemDesc Where LineItems.ItemCode = ItemDesc.ItemCode And LineItems.InvoiceNum = " + ID;
         }
 
         public string GetInvoice(int ID)
@@ -39,38 +36,25 @@ namespace GroupProject
             return sqlGetInvoiceRows + ID;
         }
 
+        public string RemoveFromDataGrid(int LineItemNum, int InvoiceID)
+        {
+            return "Delete From LineItems Where LineItemNum = " + LineItemNum + " And InvoiceNum = " + InvoiceID;
+        }
 
-        //public string EditInvoice
-        //{
-        //    get { return sqlEditInvoice +
-        //        "Set InvoiceDate = " + InvoiceDate.Date +
-        //        "Set TotalCost = " + dInvoiceCost +
-        //        "Where InvoiceNum = " + iInvoiceNum; }
-        //    set { sqlEditInvoice = value; }
-        //}
+        public string SubtractFromTotal(int InvoiceID, int Amount)
+        {
+            return "Update Invoices Set TotalCost = TotalCost - " + Amount + " Where InvoiceNum = " + InvoiceID;
+        }
 
-        //public string CreateNewInvoice
-        //{
-        //    get {
-        //        return CreateNewInvoice +
-        //      "VALUES (" + InvoiceDate.Date + ", " + dInvoiceCost + ")";
-        //    }
+       public string InsertItemIntoInvoice(int InvoiceID, int LineNum, string ItemCode)
+        {
+            return "INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) Values (" + InvoiceID + ", " + LineNum + ", '" + ItemCode + "')";
+        }
 
-        //    set { CreateNewInvoice = value; }
-        //}
-
-        //public string DeleteInvoice
-        //{
-        //    get { return sqlDeleteInvoice + iInvoiceNum; }
-        //    set { sqlDeleteInvoice = value; }
-        //}
-
-        //public string GetItems
-        //{
-        //    get { return sqlGetItems; }
-        //    set { sqlGetItems = value; }
-        //}
-
+        public string AddToTotal(int InvoiceID, int Amount)
+        {
+            return "Update Invoices Set TotalCost = TotalCost + " + Amount + " Where InvoiceNum = " + InvoiceID;
+        }
 
     }
 }
