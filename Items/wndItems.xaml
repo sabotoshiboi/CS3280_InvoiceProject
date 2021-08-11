@@ -16,9 +16,26 @@
                 <DataGridTextColumn x:Name="itemCostColumn" Header="Item Cost" Binding="{Binding ItemCost}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="searchButton" Content="Search" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="43" Width="45" Click="searchButton_Click"/>
-        <Button x:Name="addButton" Content="Add" HorizontalAlignment="Left" Margin="10,302,0,118" Width="45" Click="addButton_Click"/>
-        <Button x:Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="10,159,0,0" VerticalAlignment="Top" Height="46" Width="45" Click="editButton_Click"/>
-        <Button x:Name="deleteButton" Content="Delete" HorizontalAlignment="Left" Margin="10,238,0,0" VerticalAlignment="Top" Height="46" Width="45" Click="deleteButton_Click" RenderTransformOrigin="0.723,-2.207"/>
+        <Button x:Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="editButton_Click"/>
+        <Button x:Name="deleteButton" Content="Delete" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="deleteButton_Click" RenderTransformOrigin="0.723,-2.207"/>
+        <Button x:Name="addButton" Content="Add" HorizontalAlignment="Left" Margin="10,364,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="addButton_Click"/>
+
+        <Canvas x:Name="editCtrls" HorizontalAlignment="Left" Height="156" Margin="10,60,0,0" VerticalAlignment="Top" Width="135" Visibility="Collapsed">
+            <TextBox x:Name="editCostBox" Height="23" TextWrapping="Wrap" Canvas.Top="77" Width="120"/>
+            <Label Content="New Item Cost" Canvas.Top="51"/>
+            <TextBox x:Name="editDescBox" Height="23" TextWrapping="Wrap" Canvas.Top="28" Width="120"/>
+            <Label x:Name="editItemLbl" Content="New Item Desc" Canvas.Top="2"/>
+            <Button x:Name="saveEditButton" Content="Save" Canvas.Top="114" Width="75" Click="saveEditButton_Click"/>
+        </Canvas>
+        <Canvas x:Name="addCtrls" HorizontalAlignment="Left" Height="208" Margin="0,201,0,0" VerticalAlignment="Top" Width="145" Visibility="Collapsed">
+            <Label Content="New Item Code"/>
+            <TextBox x:Name="newItemCodeBox" Height="23" TextWrapping="Wrap" Canvas.Top="26" Width="120"/>
+            <Label Content="New Item Description" Canvas.Top="54"/>
+            <TextBox x:Name="newItemDescBox" Height="23" TextWrapping="Wrap" Canvas.Top="80" Width="120"/>
+            <Label Content="New Item Cost" Canvas.Top="108"/>
+            <TextBox x:Name="newItemCostBox" Height="23" TextWrapping="Wrap" Canvas.Top="134" Width="120"/>
+            <Button x:Name="saveNewItemButton" Content="Save" Canvas.Left="60" Canvas.Top="178" Width="75" Click="saveNewItemButton_Click"/>
+
+        </Canvas>
     </Grid>
 </Window>
