@@ -22,64 +22,149 @@ namespace GroupProject
     public partial class wndItems : Window
     {
         clsItemsSQL clsItemsSQL;
+        public bool editingItem;
+        public bool addingItem;
         public wndItems()
         {
             InitializeComponent();
+            itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
         }
-        private void searchButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
-            }
-            catch (Exception ex)
-            {
-                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
+        /// <summary>
+        /// this will allow the user to add a new Item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                
-               // clsItemsSQL.AddNewItem();
+                AddingItem();
+                //clsItemsSQL.AddNewItem();
             }
             catch (Exception ex)
             {
                 clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
             } 
         }
-
+        /// <summary>
+        /// this will allow the user to edit the item desc and cost
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
+                editingItem = true;
+                EditingItem();
             }
             catch (Exception ex)
             {
                 clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
             }
         }
-
+        /// <summary>
+        /// this will allow the user to delete an item if its not in an active invoice
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void deleteButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //this button will allow a user to delete an item as long as its not being used in an active invoice
+                clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
+                clsItemsSQL.DeleteItem(Item.ItemCode);
             }
             catch (Exception ex)
             {
                 clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
             }
         }
-
+        /// <summary>
+        /// this will handle the users current item selection 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void itemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
 
+            }
+            catch (Exception ex)
+            {
+                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+        /// <summary>
+        /// setting up editing mode for user
+        /// </summary>
+        public void EditingItem()
+        {
+            if (editingItem)
+            {
+                deleteButton.IsEnabled = false;
+                itemsDataGrid.IsEnabled = false;
+                addButton.IsEnabled = false;
+                editCtrls.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                deleteButton.IsEnabled = false;
+                itemsDataGrid.IsEnabled = false;
+                addButton.IsEnabled = false;
+                editCtrls.Visibility = Visibility.Collapsed;
+            }
+        }
+        /// <summary>
+        /// setting up new item mode for user
+        /// </summary>
+        public void AddingItem()
+        {
+            if (editingItem)
+            {
+                deleteButton.IsEnabled = false;
+                itemsDataGrid.IsEnabled = false;
+                addButton.IsEnabled = false;
+                addCtrls.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                deleteButton.IsEnabled = true;
+                itemsDataGrid.IsEnabled = true;
+                addButton.IsEnabled = true;
+                editCtrls.Visibility = Visibility.Collapsed;
+            }
+        }
+        /// <summary>
+        /// saving new item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveNewItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                addingItem = false;
+                AddingItem();
+            }
+            catch (Exception ex)
+            {
+                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+        /// <summary>
+        /// save edited item info
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveEditButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                editingItem = false;
+                EditingItem();
             }
             catch (Exception ex)
             {
