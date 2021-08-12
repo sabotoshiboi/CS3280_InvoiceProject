@@ -11,7 +11,7 @@ namespace GroupProject
     {
         private string itemCode;
         private string itemDesc;
-        private double itemCost;
+        private int itemCost;
 
         public string ItemCode
         {
@@ -25,7 +25,7 @@ namespace GroupProject
             set { itemDesc = value; }
         }
 
-        public double ItemCost
+        public int ItemCost
         {
             get { return itemCost; }
             set { itemCost = value; }
