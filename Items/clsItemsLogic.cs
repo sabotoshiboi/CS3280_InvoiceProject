@@ -15,19 +15,19 @@ namespace GroupProject
 
         public string ItemCode
         {
-            get { return ItemCode; }
+            get { return itemCode; }
             set { itemCode = value; }
         }
 
         public string ItemDesc
         {
-            get { return ItemDesc; }
+            get { return itemDesc; }
             set { itemDesc = value; }
         }
 
         public double ItemCost
         {
-            get { return ItemCost; }
+            get { return itemCost; }
             set { itemCost = value; }
         }
 
