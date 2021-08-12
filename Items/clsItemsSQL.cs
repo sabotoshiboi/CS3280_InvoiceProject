@@ -29,26 +29,23 @@ namespace GroupProject
                 System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
             }
         }
-
         /// <summary>
         /// this method will return the data from a specific invoice number on the LineItems table
         /// </summary>
         /// <param name="sInvoiceNum"></param>
         /// <returns></returns>
-        public string SelectInvoiceData(string sItemCode)
+        public void SelectInvoiceData(string sItemCode)
 
         {
             try
             {
                 string sSQL = "SELECT DISTINCT(sInvoiceNum) FROM LineItems WHERE ItemCode =" + sItemCode;
-                return sSQL;
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
         /// <summary>
         /// this method will return all item information from ItemDesc table
         /// </summary>
@@ -97,7 +94,6 @@ namespace GroupProject
                 throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
         /// <summary>
         /// this method will pull up a specific items whos infromation we want to edit
         /// </summary>
@@ -109,7 +105,7 @@ namespace GroupProject
         {
             try
             {
-                string sSQL = "UPDATE ItemDesc SET ItemDesc = " + sItemDesc + ", Cost = " + sCost + " WHERE ItemCode =" + sItemCode;
+                string sSQL = "UPDATE ItemDesc SET ItemDesc = '" + sItemDesc + "', Cost = " + sCost + " WHERE ItemCode ='" + sItemCode + "'";
                 db.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
@@ -117,7 +113,6 @@ namespace GroupProject
                 throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
             } 
         }
-
         /// <summary>
         /// this method will allow the user to add a new item
         /// </summary>
@@ -129,7 +124,7 @@ namespace GroupProject
         {
             try
             {
-                string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Cost) VALUES(" + sItemCode + ", " + sItemDesc + ", " + sCost + ")";
+                string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Cost) VALUES('" + sItemCode + "', '" + sItemDesc + "', " + sCost + ")";
                 db.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
@@ -138,7 +133,6 @@ namespace GroupProject
             }
             
         }
-
         /// <summary>
         /// this method will allow users to delete items
         /// </summary>
