@@ -118,5 +118,11 @@ namespace GroupProject
             SSQL = sqlString.DeleteInvoiceFromInvoice(InvoiceID);
             db.ExecuteNonQuery(SSQL);
         }
+
+        public void UpdateInvoiceTime(int InvoiceID, DateTime newTime)
+        {
+            SSQL = sqlString.UpdateInvoiceDate(InvoiceID, newTime);
+            db.ExecuteNonQuery(SSQL);
+        }
     }
 }

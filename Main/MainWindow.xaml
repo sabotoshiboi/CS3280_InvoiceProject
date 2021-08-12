@@ -21,7 +21,7 @@
             <GroupBox x:Name="InvoiceGroupBox" Header="Invoice" HorizontalAlignment="Left" Height="336" Margin="435,14,0,0" VerticalAlignment="Top" Width="347"/>
 
             <GroupBox Header="Items" HorizontalAlignment="Left" Height="336" Margin="25,14,0,0" VerticalAlignment="Top" Width="391">
-                <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="10,211,0,0" VerticalAlignment="Top" Width="178" IsEnabled="False" Click="SaveButton_Click"/>
+                <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Left" Margin="-3,211,0,0" VerticalAlignment="Top" Width="178" IsEnabled="False" Click="SaveButton_Click"/>
             </GroupBox>
 
             <Button x:Name="CreateInvoiceButton" Content="Create" HorizontalAlignment="Left" Margin="454,261,0,0" VerticalAlignment="Top" Width="288"/>
@@ -32,14 +32,14 @@
             <Label x:Name="InvoiceNumLabel" Content="Invoice Number:" HorizontalAlignment="Left" Margin="492,94,0,0" VerticalAlignment="Top"/>
             <Label x:Name="InvoiceDateLabel" Content="Invoice Date:" HorizontalAlignment="Left" Margin="492,126,0,0" VerticalAlignment="Top"/>
             <Label x:Name="InvoiceCostLabel" Content="Total Cost:" HorizontalAlignment="Left" Margin="492,163,0,0" VerticalAlignment="Top"/>
-            <DatePicker x:Name="InvoiceDatePicker" HorizontalAlignment="Left" Margin="622,126,0,0" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
-            <DataGrid x:Name="InvoiceItemsDataGrid" HorizontalAlignment="Left" Height="217" Margin="247,41,0,0" VerticalAlignment="Top" Width="156" SelectionChanged="InvoiceItemsDataGrid_SelectionChanged"/>
-            <ComboBox x:Name="ItemsListComboBox" HorizontalAlignment="Left" Margin="106,87,0,0" VerticalAlignment="Top" Width="113" SelectionChanged="ItemsListComboBox_SelectionChanged" />
+            <DatePicker x:Name="InvoiceDatePicker" HorizontalAlignment="Left" Margin="622,126,0,0" VerticalAlignment="Top" Width="120" IsEnabled="False" SelectedDateChanged="InvoiceDatePicker_SelectedDateChanged"/>
+            <DataGrid x:Name="InvoiceItemsDataGrid" HorizontalAlignment="Left" Height="217" Margin="211,41,0,0" VerticalAlignment="Top" Width="205" SelectionChanged="InvoiceItemsDataGrid_SelectionChanged" CanUserAddRows="False"/>
+            <ComboBox x:Name="ItemsListComboBox" HorizontalAlignment="Left" Margin="93,87,0,0" VerticalAlignment="Top" Width="113" SelectionChanged="ItemsListComboBox_SelectionChanged" />
             <Label Content="Items:" HorizontalAlignment="Left" Margin="44,87,0,0" VerticalAlignment="Top" Height="22" FontSize="10"/>
-            <TextBox x:Name="ItemCostTextBox" HorizontalAlignment="Left" Height="20" Margin="106,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="113" IsReadOnly="True"/>
+            <TextBox x:Name="ItemCostTextBox" HorizontalAlignment="Left" Height="20" Margin="93,126,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="113" IsReadOnly="True"/>
             <Label x:Name="ItemCostLabel" Content="Item Cost:" HorizontalAlignment="Left" Margin="44,126,0,0" VerticalAlignment="Top" Height="20" FontSize="9"/>
-            <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="144,168,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="AddButton_Click"/>
-            <Button x:Name="RemoveButton" Content="Remove" HorizontalAlignment="Left" Margin="144,204,0,0" VerticalAlignment="Top" Width="74" IsEnabled="False" Click="RemoveButton_Click"/>
+            <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="93,173,0,0" VerticalAlignment="Top" Width="75" IsEnabled="False" Click="AddButton_Click"/>
+            <Button x:Name="RemoveButton" Content="Remove" HorizontalAlignment="Left" Margin="93,209,0,0" VerticalAlignment="Top" Width="74" IsEnabled="False" Click="RemoveButton_Click"/>
 
         </Grid>
     </DockPanel>
