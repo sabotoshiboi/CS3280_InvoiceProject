@@ -21,7 +21,24 @@ namespace GroupProject
     /// </summary>
     public partial class wndItems : Window
     {
+        /// <summary>
+        /// creating a main window 
+        /// </summary>
+        MainWindow MainWindow = new MainWindow();
+
+        /// <summary>
+        /// creating a class object for Items
+        /// </summary>
+        clsMainLogic clsMainLogic = new clsMainLogic();
+
+        /// <summary>
+        /// creating an SQL objest to call statements 
+        /// </summary>
         clsItemsSQL clsItemsSQL = new clsItemsSQL();
+
+        /// <summary>
+        /// creating bools to enable add and edit controls
+        /// </summary>
         public bool editingItem;
         public bool addingItem;
         public wndItems()
@@ -57,6 +74,10 @@ namespace GroupProject
             {
                 if (itemsDataGrid.SelectedIndex > -1)
                 {
+                    clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
+                    
+                    editDescBox.Text = Item.ItemDesc;
+                    editCostBox.Text = Item.ItemCost.ToString();
                     editingItem = true;
                     EditingItem();
                 }
@@ -76,28 +97,12 @@ namespace GroupProject
             try
             {
                 /*
-                if (FIND OUT IF ITEM IS ON ACTIVE INVOICE HERE!!!!!!!!!!!)
+                if (itemsDataGrid.SelectedIndex > -1 && FIND OUT IF ITEM IS ON ACTIVE INVOICE HERE!!!!!!!!!!!)
                 {
                     clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
                     clsItemsSQL.DeleteItem(Item.ItemCode);
                 }
                 */
-            }
-            catch (Exception ex)
-            {
-                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-        /// <summary>
-        /// this will handle the users current item selection 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void itemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-
             }
             catch (Exception ex)
             {
@@ -111,16 +116,18 @@ namespace GroupProject
         {
             if (editingItem)
             {
+                closeButton.IsEnabled = false;
                 deleteButton.IsEnabled = false;
                 addButton.IsEnabled = false;
-                itemsDataGrid.Visibility = Visibility.Hidden;
+                itemsDataGrid.IsHitTestVisible = false;
                 editCtrls.Visibility = Visibility.Visible;
             }
             else
             {
+                closeButton.IsEnabled = true;
                 deleteButton.IsEnabled = true;
                 addButton.IsEnabled = true;
-                itemsDataGrid.Visibility = Visibility.Visible;
+                itemsDataGrid.IsHitTestVisible = true;
                 editCtrls.Visibility = Visibility.Collapsed;
             }
         }
@@ -135,12 +142,15 @@ namespace GroupProject
                 itemsDataGrid.IsEnabled = false;
                 addButton.IsEnabled = false;
                 addCtrls.Visibility = Visibility.Visible;
+                closeButton.Visibility = Visibility.Collapsed;
             }
             else
             {
+                closeButton.IsEnabled = true;
                 deleteButton.IsEnabled = true;
                 itemsDataGrid.IsEnabled = true;
-                addButton.IsEnabled = true;               
+                addButton.IsEnabled = true;
+                closeButton.Visibility = Visibility.Visible;
                 addCtrls.Visibility = Visibility.Collapsed;
             }
         }
@@ -153,10 +163,35 @@ namespace GroupProject
         {
             try
             {
-                clsItemsSQL.AddNewItem(newItemCodeBox.Text, newItemDescBox.Text, Convert.ToInt32(newItemCostBox.Text));
-                addingItem = false;
-                AddingItem();
-                itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
+                bool codeTaken = false;
+                for (int i = 0; i < itemsDataGrid.Items.Count; i++)
+                {
+                    clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.Items[i];
+
+                    if (Item.ItemCode == newItemCodeBox.Text)
+                    {
+                        codeTaken = true;   
+                    }
+                }
+                if (!codeTaken)
+                {
+                    clsItemsSQL.AddNewItem(newItemCodeBox.Text, newItemDescBox.Text, Convert.ToInt32(newItemCostBox.Text));
+                    addingItem = false;
+                    AddingItem();
+                    itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
+                    clsMainLogic.UpdateItemList();
+                    for (int i = 0; i < clsMainLogic.iret; i++)
+                    {
+                        clsMainLogic.itemList.Add(clsMainLogic.ds.Tables[0].Rows[i]);
+                    }
+
+                    for (int i = 0; i < clsMainLogic.itemList.Count; i++)
+                    {
+                        MainWindow.ItemsListComboBox.Items.Add(clsMainLogic.itemList[i][1]);
+                    }
+                }
+                else
+                    addErrorLabel.Content = "Please select a new \nunused Item Code";
             }
             catch (Exception ex)
             {
@@ -177,6 +212,32 @@ namespace GroupProject
                 editingItem = false;
                 EditingItem();
                 itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
+                clsMainLogic.UpdateItemList();
+                for (int i = 0; i < clsMainLogic.iret; i++)
+                {
+                    clsMainLogic.itemList.Add(clsMainLogic.ds.Tables[0].Rows[i]);
+                }
+
+                for (int i = 0; i < clsMainLogic.itemList.Count; i++)
+                {
+                    MainWindow.ItemsListComboBox.Items.Add(clsMainLogic.itemList[i][1]);
+                }
+            }
+            catch (Exception ex)
+            {
+                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+        /// <summary>
+        /// close the program with a button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void closeButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Close();
             }
             catch (Exception ex)
             {
