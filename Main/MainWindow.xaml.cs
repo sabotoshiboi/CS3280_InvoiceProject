@@ -119,7 +119,7 @@ namespace GroupProject
             AddButton.IsEnabled = false;
             RemoveButton.IsEnabled = false;
 
-            if (InvoiceItemsDataGrid.Items.Count > 1)
+            if (InvoiceItemsDataGrid.Items.Count > 0)
             {
                 CreateInvoiceButton.IsEnabled = false;
                 DeleteInvoiceButton.IsEnabled = true;
@@ -169,7 +169,7 @@ namespace GroupProject
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            busLog.InsertItemIntoInvoice(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceItemsDataGrid.Items.Count, busLog.itemList[ItemsListComboBox.SelectedIndex][0].ToString());
+            busLog.InsertItemIntoInvoice(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceItemsDataGrid.Items.Count + 1, busLog.itemList[ItemsListComboBox.SelectedIndex][0].ToString());
             busLog.AddToTotalCost(Int32.Parse(InvoiceNumberTextBox.Text), Int32.Parse(busLog.itemList[ItemsListComboBox.SelectedIndex][2].ToString()));
             RefreshDataGrid();
 
@@ -180,6 +180,10 @@ namespace GroupProject
             if(ItemsListComboBox.SelectedIndex >= 0 )
             {
                 ItemCostTextBox.Text = "$" + busLog.itemList[ItemsListComboBox.SelectedIndex][2].ToString();
+                if (busLog.editing)
+                {
+                    AddButton.IsEnabled = true;
+                }
             }
         }
 
@@ -204,6 +208,7 @@ namespace GroupProject
             EditInvoiceButton.IsEnabled = false;
             SaveButton.IsEnabled = true;
             InvoiceNumberTextBox.IsEnabled = false;
+            InvoiceDatePicker.IsEnabled = true;
 
             if(ItemsListComboBox.SelectedIndex > 0)
             {
@@ -219,14 +224,22 @@ namespace GroupProject
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             busLog.editing = false;
-            CreateInvoiceButton.IsEnabled = true;
             DeleteInvoiceButton.IsEnabled = true;
             EditInvoiceButton.IsEnabled = true;
             SaveButton.IsEnabled = false;
             InvoiceNumberTextBox.IsEnabled = true;
+            InvoiceDatePicker.IsEnabled = false;
 
             AddButton.IsEnabled = false;
             RemoveButton.IsEnabled = false;
+        }
+
+        private void InvoiceDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (busLog.editing)
+            {
+                busLog.UpdateInvoiceTime(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceDatePicker.SelectedDate.Value);
+            }
         }
     }
 }

@@ -66,5 +66,9 @@ namespace GroupProject
             return "DELETE From LineItems WHERE InvoiceNum = " + InvoiceID;
         }
 
+        public string UpdateInvoiceDate(int InvoiceID, DateTime newtime)
+        {
+            return "Update Invoices Set InvoiceDate = " + newtime + " Where InvoiceID = " + InvoiceID;
+        }
     }
 }
