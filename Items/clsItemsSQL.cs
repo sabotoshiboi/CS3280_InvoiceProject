@@ -29,26 +29,23 @@ namespace GroupProject
                 System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
             }
         }
-
         /// <summary>
         /// this method will return the data from a specific invoice number on the LineItems table
         /// </summary>
         /// <param name="sInvoiceNum"></param>
         /// <returns></returns>
-        public string SelectInvoiceData(int sInvoiceNum)
+        public void SelectInvoiceData(string sItemCode)
 
         {
             try
             {
-                string sSQL = "SELECT DISTINCT(sInvoiceNum) FROM LineItems WHERE ItemCode =" + sInvoiceNum;
-                return sSQL;
+                string sSQL = "SELECT DISTINCT(sInvoiceNum) FROM LineItems WHERE ItemCode =" + sItemCode;
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
         /// <summary>
         /// this method will return all item information from ItemDesc table
         /// </summary>
@@ -86,7 +83,7 @@ namespace GroupProject
                     clsItemsLogic = new clsItemsLogic();
                     clsItemsLogic.ItemCode = (string)ds.Tables[0].Rows[i][0];
                     clsItemsLogic.ItemDesc = ds.Tables[0].Rows[i]["ItemDesc"].ToString();
-                    clsItemsLogic.ItemCost = Convert.ToDouble(ds.Tables[0].Rows[i]["Cost"]);
+                    clsItemsLogic.ItemCost = Convert.ToInt32(ds.Tables[0].Rows[i]["Cost"]);
                     lstItems.Add(clsItemsLogic);
                 }
 
@@ -97,7 +94,6 @@ namespace GroupProject
                 throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
         /// <summary>
         /// this method will pull up a specific items whos infromation we want to edit
         /// </summary>
@@ -105,19 +101,18 @@ namespace GroupProject
         /// <param name="sItemCode"></param>
         /// <param name="sCost"></param>
         /// <returns></returns>
-        public string UpdateItemData(string sItemDesc, string sItemCode, double sCost)
+        public void UpdateItemData(string sItemDesc, string sItemCode, int sCost)
         {
             try
             {
-                string sSQL = "UPDATE ItemDesc SET ItemDesc = " + sItemDesc + ", Cost = " + sCost + " WHERE ItemCode =" + sItemCode;
-                return sSQL;
+                string sSQL = "UPDATE ItemDesc SET ItemDesc = '" + sItemDesc + "', Cost = " + sCost + " WHERE ItemCode ='" + sItemCode + "'";
+                db.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
             {
                 throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
             } 
         }
-
         /// <summary>
         /// this method will allow the user to add a new item
         /// </summary>
@@ -125,12 +120,12 @@ namespace GroupProject
         /// <param name="sItemDesc"></param>
         /// <param name="sCost"></param>
         /// <returns></returns>
-        public string AddNewItem(string sItemCode, string sItemDesc, double sCost)
+        public void AddNewItem(string sItemCode, string sItemDesc, int sCost)
         {
             try
             {
-                string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Cost) VALUES(" + sItemCode + ", " + sItemDesc + ", " + sCost + ")";
-                return sSQL;
+                string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Cost) VALUES('" + sItemCode + "', '" + sItemDesc + "', " + sCost + ")";
+                db.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
             {
@@ -138,18 +133,17 @@ namespace GroupProject
             }
             
         }
-
         /// <summary>
         /// this method will allow users to delete items
         /// </summary>
         /// <param name="sItemCode"></param>
         /// <returns></returns>
-        public string DeleteItem(string sItemCode)
+        public void DeleteItem(string sItemCode)
         {
             try
             {
                 string sSQL = "DELETE FROM ItemDesc WHERE ItemCode = " + sItemCode;
-                return sSQL;
+                db.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
             {

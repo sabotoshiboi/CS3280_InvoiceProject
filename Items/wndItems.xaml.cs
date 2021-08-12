@@ -21,7 +21,24 @@ namespace GroupProject
     /// </summary>
     public partial class wndItems : Window
     {
+        /// <summary>
+        /// creating a main window 
+        /// </summary>
+        MainWindow MainWindow = new MainWindow();
+
+        /// <summary>
+        /// creating a class object for Items
+        /// </summary>
+        clsMainLogic clsMainLogic = new clsMainLogic();
+
+        /// <summary>
+        /// creating an SQL objest to call statements 
+        /// </summary>
         clsItemsSQL clsItemsSQL = new clsItemsSQL();
+
+        /// <summary>
+        /// creating bools to enable add and edit controls
+        /// </summary>
         public bool editingItem;
         public bool addingItem;
         public wndItems()
@@ -40,7 +57,6 @@ namespace GroupProject
             {
                 addingItem = true;
                 AddingItem();
-                //clsItemsSQL.AddNewItem();
             }
             catch (Exception ex)
             {
@@ -55,9 +71,16 @@ namespace GroupProject
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             try
-            {   
-                editingItem = true;
-                EditingItem();
+            {
+                if (itemsDataGrid.SelectedIndex > -1)
+                {
+                    clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
+                    
+                    editDescBox.Text = Item.ItemDesc;
+                    editCostBox.Text = Item.ItemCost.ToString();
+                    editingItem = true;
+                    EditingItem();
+                }
             }
             catch (Exception ex)
             {
@@ -74,28 +97,12 @@ namespace GroupProject
             try
             {
                 /*
-                if (FIND OUT IF ITEM IS ON ACTIVE INVOICE HERE!!!!!!!!!!!)
+                if (itemsDataGrid.SelectedIndex > -1 && FIND OUT IF ITEM IS ON ACTIVE INVOICE HERE!!!!!!!!!!!)
                 {
                     clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
                     clsItemsSQL.DeleteItem(Item.ItemCode);
                 }
                 */
-            }
-            catch (Exception ex)
-            {
-                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-        /// <summary>
-        /// this will handle the users current item selection 
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void itemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            try
-            {
-
             }
             catch (Exception ex)
             {
@@ -109,16 +116,18 @@ namespace GroupProject
         {
             if (editingItem)
             {
+                closeButton.IsEnabled = false;
                 deleteButton.IsEnabled = false;
                 addButton.IsEnabled = false;
-                itemsDataGrid.Visibility = Visibility.Hidden;
+                itemsDataGrid.IsHitTestVisible = false;
                 editCtrls.Visibility = Visibility.Visible;
             }
             else
             {
-                deleteButton.IsEnabled = false;
-                itemsDataGrid.IsEnabled = false;
-                addButton.IsEnabled = false;
+                closeButton.IsEnabled = true;
+                deleteButton.IsEnabled = true;
+                addButton.IsEnabled = true;
+                itemsDataGrid.IsHitTestVisible = true;
                 editCtrls.Visibility = Visibility.Collapsed;
             }
         }
@@ -133,13 +142,16 @@ namespace GroupProject
                 itemsDataGrid.IsEnabled = false;
                 addButton.IsEnabled = false;
                 addCtrls.Visibility = Visibility.Visible;
+                closeButton.Visibility = Visibility.Collapsed;
             }
             else
             {
+                closeButton.IsEnabled = true;
                 deleteButton.IsEnabled = true;
                 itemsDataGrid.IsEnabled = true;
                 addButton.IsEnabled = true;
-                editCtrls.Visibility = Visibility.Collapsed;
+                closeButton.Visibility = Visibility.Visible;
+                addCtrls.Visibility = Visibility.Collapsed;
             }
         }
         /// <summary>
@@ -151,11 +163,35 @@ namespace GroupProject
         {
             try
             {
-                double cost;
-                double.TryParse(newItemCostBox.Text, out cost);
-                clsItemsSQL.AddNewItem(newItemCodeBox.Text, newItemDescBox.Text, cost);
-                addingItem = false;
-                AddingItem();
+                bool codeTaken = false;
+                for (int i = 0; i < itemsDataGrid.Items.Count; i++)
+                {
+                    clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.Items[i];
+
+                    if (Item.ItemCode == newItemCodeBox.Text)
+                    {
+                        codeTaken = true;   
+                    }
+                }
+                if (!codeTaken)
+                {
+                    clsItemsSQL.AddNewItem(newItemCodeBox.Text, newItemDescBox.Text, Convert.ToInt32(newItemCostBox.Text));
+                    addingItem = false;
+                    AddingItem();
+                    itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
+                    clsMainLogic.UpdateItemList();
+                    for (int i = 0; i < clsMainLogic.iret; i++)
+                    {
+                        clsMainLogic.itemList.Add(clsMainLogic.ds.Tables[0].Rows[i]);
+                    }
+
+                    for (int i = 0; i < clsMainLogic.itemList.Count; i++)
+                    {
+                        MainWindow.ItemsListComboBox.Items.Add(clsMainLogic.itemList[i][1]);
+                    }
+                }
+                else
+                    addErrorLabel.Content = "Please select a new \nunused Item Code";
             }
             catch (Exception ex)
             {
@@ -172,16 +208,50 @@ namespace GroupProject
             try
             {
                 clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
-                double cost;
-                double.TryParse(editCostBox.Text, out cost);
-                clsItemsSQL.UpdateItemData(editDescBox.Text, Item.ItemCode, cost);
+                clsItemsSQL.UpdateItemData(editDescBox.Text, Item.ItemCode, Convert.ToInt32(editCostBox.Text));
                 editingItem = false;
                 EditingItem();
+                itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
+                clsMainLogic.UpdateItemList();
+                for (int i = 0; i < clsMainLogic.iret; i++)
+                {
+                    clsMainLogic.itemList.Add(clsMainLogic.ds.Tables[0].Rows[i]);
+                }
+
+                for (int i = 0; i < clsMainLogic.itemList.Count; i++)
+                {
+                    MainWindow.ItemsListComboBox.Items.Add(clsMainLogic.itemList[i][1]);
+                }
             }
             catch (Exception ex)
             {
                 clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
             }
+        }
+        /// <summary>
+        /// close the program with a button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void closeButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Close();
+            }
+            catch (Exception ex)
+            {
+                clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+        /// <summary>
+        /// this method controls the programs action when the user clicks a specific datagrid item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void itemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -9,9 +9,12 @@ namespace GroupProject
 {
     public class clsItemsLogic
     {
+        /// <summary>
+        /// creating the class that will hold the Items logics 
+        /// </summary>
         private string itemCode;
         private string itemDesc;
-        private double itemCost;
+        private int itemCost;
 
         public string ItemCode
         {
@@ -25,7 +28,7 @@ namespace GroupProject
             set { itemDesc = value; }
         }
 
-        public double ItemCost
+        public int ItemCost
         {
             get { return itemCost; }
             set { itemCost = value; }
