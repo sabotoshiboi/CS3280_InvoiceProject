@@ -16,8 +16,10 @@ namespace GroupProject
         public clsDataAccess db = new clsDataAccess();
         public clsMainSQL sqlString = new clsMainSQL();
         public List<DataRow> itemList = new List<DataRow>();
+        public List<DataRow> itemInsertList = new List<DataRow>();
 
         public bool editing = false;
+        public bool creating = false;
 
         string sSQL;
         public string SSQL
@@ -87,11 +89,6 @@ namespace GroupProject
             db.ExecuteNonQuery(SSQL);
         }
 
-        public void SubtractFromTotalCost(int InvoiceID, int Amount) 
-        {
-            SSQL = sqlString.SubtractFromTotal(InvoiceID, Amount);
-            db.ExecuteNonQuery(SSQL);
-        }
 
         public void UpdateItemList()
         {
@@ -102,12 +99,6 @@ namespace GroupProject
        public void InsertItemIntoInvoice(int InvoiceID, int LineNum, string ItemCode)
         {
             SSQL = sqlString.InsertItemIntoInvoice(InvoiceID, LineNum, ItemCode);
-            db.ExecuteNonQuery(SSQL);
-        }
-
-        public void AddToTotalCost(int InvoiceID, int Amount)
-        {
-            SSQL = sqlString.AddToTotal(InvoiceID, Amount);
             db.ExecuteNonQuery(SSQL);
         }
 
@@ -123,6 +114,51 @@ namespace GroupProject
         {
             SSQL = sqlString.UpdateInvoiceDate(InvoiceID, newTime);
             db.ExecuteNonQuery(SSQL);
+        }
+
+        public void CreateNewInvoice(DateTime newDate)
+        {
+            SSQL = sqlString.CreateNewInvoice(newDate);
+            db.ExecuteNonQuery(SSQL);
+        }
+
+        public string GetnewInvoiceID()
+        {
+            SSQL = sqlString.GetNewInvoiceNumber;
+            return db.ExecuteScalarSQL(SSQL);
+        }
+
+        public int GetCostSum(int InvoiceID)
+        {
+            SSQL = sqlString.GetCostSum(InvoiceID);
+            return Int32.Parse(db.ExecuteScalarSQL(SSQL));
+        } 
+
+        public void UpdateCost(int InvoiceID)
+        {
+            invoicecost = GetCostSum(InvoiceID);
+            SSQL = sqlString.UpdateCost(InvoiceID, GetCostSum(InvoiceID));
+            db.ExecuteNonQuery(SSQL);
+        }
+
+        public bool ValidInvoice(string InvoiceID)
+        {
+            if (InvoiceID != "")
+            {
+                SSQL = sqlString.ValidateInvoice(Int32.Parse(InvoiceID));
+                if (db.ExecuteScalarSQL(SSQL) != "")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

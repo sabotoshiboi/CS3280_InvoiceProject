@@ -41,19 +41,10 @@ namespace GroupProject
             return "Delete From LineItems Where LineItemNum = " + LineItemNum + " And InvoiceNum = " + InvoiceID;
         }
 
-        public string SubtractFromTotal(int InvoiceID, int Amount)
-        {
-            return "Update Invoices Set TotalCost = TotalCost - " + Amount + " Where InvoiceNum = " + InvoiceID;
-        }
 
        public string InsertItemIntoInvoice(int InvoiceID, int LineNum, string ItemCode)
         {
             return "INSERT INTO LineItems (InvoiceNum, LineItemNum, ItemCode) Values (" + InvoiceID + ", " + LineNum + ", '" + ItemCode + "')";
-        }
-
-        public string AddToTotal(int InvoiceID, int Amount)
-        {
-            return "Update Invoices Set TotalCost = TotalCost + " + Amount + " Where InvoiceNum = " + InvoiceID;
         }
 
         public string DeleteInvoiceFromInvoice(int InvoiceID)
@@ -68,7 +59,30 @@ namespace GroupProject
 
         public string UpdateInvoiceDate(int InvoiceID, DateTime newtime)
         {
-            return "Update Invoices Set InvoiceDate = " + newtime + " Where InvoiceID = " + InvoiceID;
+            return "Update Invoices Set InvoiceDate = '" + newtime + "' Where InvoiceNum = " + InvoiceID;
         }
+
+        public string CreateNewInvoice(DateTime newDate)
+        {
+            return "INSERT INTO Invoices (InvoiceDate, TotalCost) Values ('" + newDate + "' , 0)";
+        }
+
+        public string ValidateInvoice(int InvoiceID)
+        {
+            return "Select InvoiceNum from Invoices Where InvoiceNum = " + InvoiceID;
+        }
+
+        public string GetCostSum(int InvoiceID)
+        {
+            return "Select Sum(ItemDesc.Cost) from ItemDesc, LineItems Where LineItems.ItemCode = ItemDesc.ItemCode AND LineItems.InvoiceNum = " + InvoiceID;
+        }
+
+        public string UpdateCost(int InvoiceID, int Amount)
+        {
+            return "Update Invoices Set TotalCost = " + Amount + " Where InvoiceNum = " + InvoiceID;
+        }
+
+        public string GetNewInvoiceNumber = "Select Max(InvoiceNum) From Invoices";
+
     }
 }
