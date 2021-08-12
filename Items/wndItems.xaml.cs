@@ -21,7 +21,7 @@ namespace GroupProject
     /// </summary>
     public partial class wndItems : Window
     {
-        clsItemsSQL clsItemsSQL;
+        clsItemsSQL clsItemsSQL = new clsItemsSQL();
         public bool editingItem;
         public bool addingItem;
         public wndItems()
