@@ -9,6 +9,9 @@ namespace GroupProject
 {
     public class clsItemsLogic
     {
+        /// <summary>
+        /// creating the class that will hold the Items logics 
+        /// </summary>
         private string itemCode;
         private string itemDesc;
         private int itemCost;
