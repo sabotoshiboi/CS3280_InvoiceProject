@@ -35,12 +35,12 @@ namespace GroupProject
         /// </summary>
         /// <param name="sInvoiceNum"></param>
         /// <returns></returns>
-        public string SelectInvoiceData(int sInvoiceNum)
+        public string SelectInvoiceData(string sItemCode)
 
         {
             try
             {
-                string sSQL = "SELECT DISTINCT(sInvoiceNum) FROM LineItems WHERE ItemCode =" + sInvoiceNum;
+                string sSQL = "SELECT DISTINCT(sInvoiceNum) FROM LineItems WHERE ItemCode =" + sItemCode;
                 return sSQL;
             }
             catch (Exception ex)
@@ -86,7 +86,7 @@ namespace GroupProject
                     clsItemsLogic = new clsItemsLogic();
                     clsItemsLogic.ItemCode = (string)ds.Tables[0].Rows[i][0];
                     clsItemsLogic.ItemDesc = ds.Tables[0].Rows[i]["ItemDesc"].ToString();
-                    clsItemsLogic.ItemCost = Convert.ToDouble(ds.Tables[0].Rows[i]["Cost"]);
+                    clsItemsLogic.ItemCost = Convert.ToInt32(ds.Tables[0].Rows[i]["Cost"]);
                     lstItems.Add(clsItemsLogic);
                 }
 
@@ -105,12 +105,12 @@ namespace GroupProject
         /// <param name="sItemCode"></param>
         /// <param name="sCost"></param>
         /// <returns></returns>
-        public string UpdateItemData(string sItemDesc, string sItemCode, double sCost)
+        public void UpdateItemData(string sItemDesc, string sItemCode, int sCost)
         {
             try
             {
                 string sSQL = "UPDATE ItemDesc SET ItemDesc = " + sItemDesc + ", Cost = " + sCost + " WHERE ItemCode =" + sItemCode;
-                return sSQL;
+                db.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
             {
@@ -125,12 +125,12 @@ namespace GroupProject
         /// <param name="sItemDesc"></param>
         /// <param name="sCost"></param>
         /// <returns></returns>
-        public string AddNewItem(string sItemCode, string sItemDesc, double sCost)
+        public void AddNewItem(string sItemCode, string sItemDesc, int sCost)
         {
             try
             {
                 string sSQL = "INSERT INTO ItemDesc(ItemCode, ItemDesc, Cost) VALUES(" + sItemCode + ", " + sItemDesc + ", " + sCost + ")";
-                return sSQL;
+                db.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
             {
@@ -144,12 +144,12 @@ namespace GroupProject
         /// </summary>
         /// <param name="sItemCode"></param>
         /// <returns></returns>
-        public string DeleteItem(string sItemCode)
+        public void DeleteItem(string sItemCode)
         {
             try
             {
                 string sSQL = "DELETE FROM ItemDesc WHERE ItemCode = " + sItemCode;
-                return sSQL;
+                db.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
             {
