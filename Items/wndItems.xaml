@@ -9,13 +9,8 @@
       Title="wndItems">
 
     <Grid Background="White">
-        <DataGrid x:Name="itemsDataGrid" Margin="150,0,0,0" SelectionChanged="itemsDataGrid_SelectionChanged">
-            <DataGrid.Columns>
-                <DataGridTextColumn x:Name="itemCodeColumn" Header="Item Code"  Binding="{Binding ItemCode}"/>
-                <DataGridTextColumn x:Name="itemDescColumn" Header="Item Description" Binding="{Binding ItemDescription}" />
-                <DataGridTextColumn x:Name="itemCostColumn" Header="Item Cost" Binding="{Binding ItemCost}" />
-            </DataGrid.Columns>
-        </DataGrid>
+        <DataGrid x:Name="itemsDataGrid" Margin="150,0,0,0" SelectionMode="Single" SelectionUnit="FullRow" SelectionChanged="itemsDataGrid_SelectionChanged" IsReadOnly="True" CanUserAddRows = "false"/>
+
         <Button x:Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="editButton_Click"/>
         <Button x:Name="deleteButton" Content="Delete" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="deleteButton_Click" RenderTransformOrigin="0.723,-2.207"/>
         <Button x:Name="addButton" Content="Add" HorizontalAlignment="Left" Margin="10,364,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="addButton_Click"/>
