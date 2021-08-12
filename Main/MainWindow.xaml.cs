@@ -23,10 +23,25 @@ namespace GroupProject
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Instance of the search window
+        /// </summary>
         wndSearch SearchWindowForm;
+        /// <summary>
+        /// Instance of the Items window
+        /// </summary>
         wndItems ItemWindowForm;
+        /// <summary>
+        /// Instance of the SQL class
+        /// </summary>
         clsMainSQL sqlClass;
+        /// <summary>
+        /// Instance of the Main Logic class
+        /// </summary>
         clsMainLogic busLog = new clsMainLogic();
+        /// <summary>
+        /// Constructor for the main window
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -108,6 +123,11 @@ namespace GroupProject
 
         }
 
+        /// <summary>
+        /// Called when the text in the Invoice Number Text Box changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void InvoiceNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
         { 
             if (!busLog.creating)
@@ -136,13 +156,21 @@ namespace GroupProject
             }
 
         }
-
+        /// <summary>
+        /// Ensures only numbers can be inputted in the Invoice Number Text Box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void InvoiceNumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
-
+        /// <summary>
+        /// Called when the Data grid changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void InvoiceItemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (InvoiceItemsDataGrid.SelectedIndex >= 0 && busLog.editing)
@@ -150,7 +178,11 @@ namespace GroupProject
                 RemoveButton.IsEnabled = true;
             }
         }
-
+        /// <summary>
+        /// Called when the Remove button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
             busLog.RemoveItemFromGrid(Int32.Parse(InvoiceNumberTextBox.Text), Int32.Parse(busLog.ds.Tables[0].Rows[InvoiceItemsDataGrid.SelectedIndex][3].ToString()));
@@ -165,7 +197,9 @@ namespace GroupProject
                 RemoveButton.IsEnabled = false;
             }
         }
-
+        /// <summary>
+        /// Refreshes the Data Grid when information changes
+        /// </summary>
         private void RefreshDataGrid()
         {
             if (!busLog.creating)
@@ -183,7 +217,11 @@ namespace GroupProject
 
             }
         }
-
+        /// <summary>
+        /// Called when the add button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             if (busLog.editing)
@@ -203,7 +241,11 @@ namespace GroupProject
             RefreshDataGrid();
 
         }
-
+        /// <summary>
+        /// Called when the Combo box selection changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ItemsListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(ItemsListComboBox.SelectedIndex >= 0 )
@@ -215,7 +257,11 @@ namespace GroupProject
                 }
             }
         }
-
+        /// <summary>
+        /// Called when the Delete button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
             var choice = MessageBox.Show("Delete this Invoice?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -228,7 +274,11 @@ namespace GroupProject
                 EditInvoiceButton.IsEnabled = false;
             }
         }
-
+        /// <summary>
+        /// Called when the Edit Button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EditInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
             busLog.editing = true;
@@ -249,7 +299,11 @@ namespace GroupProject
                 RemoveButton.IsEnabled = true;
             }
         }
-
+        /// <summary>
+        /// Called when the Save button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (busLog.editing)
@@ -268,7 +322,7 @@ namespace GroupProject
             if (busLog.creating)
             {
                 busLog.creating = false;
-                CreateNewInvoice();
+                busLog.CreateNewInvoice(InvoiceDatePicker.SelectedDate.Value);
                 InvoiceNumberTextBox.IsReadOnly = false;
                 InvoiceNumberTextBox.Text = busLog.GetnewInvoiceID();
 
@@ -288,7 +342,11 @@ namespace GroupProject
             CreateInvoiceButton.IsEnabled = true;
             InvoiceDatePicker.IsEnabled = false;
         }
-
+        /// <summary>
+        /// Called when the Date in the Date Picker changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void InvoiceDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             if (busLog.editing)
@@ -296,7 +354,11 @@ namespace GroupProject
                 busLog.UpdateInvoiceTime(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceDatePicker.SelectedDate.Value);
             }
         }
-
+        /// <summary>
+        /// Called when the Create button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CreateInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
             busLog.creating = true;
@@ -314,11 +376,6 @@ namespace GroupProject
 
             InvoiceItemsDataGrid.ItemsSource = null;
             InvoiceItemsDataGrid.Items.Clear();
-        }
-
-        private void CreateNewInvoice()
-        {
-            busLog.CreateNewInvoice(InvoiceDatePicker.SelectedDate.Value);
         }
     }
 }

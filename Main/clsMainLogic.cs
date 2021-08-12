@@ -12,53 +12,91 @@ namespace GroupProject
 {
     public class clsMainLogic
     {
+        /// <summary>
+        /// Instance of the Data Set Class
+        /// </summary>
         public DataSet ds = new DataSet();
+        /// <summary>
+        /// Instance of the Data Access Class
+        /// </summary>
         public clsDataAccess db = new clsDataAccess();
+        /// <summary>
+        /// Instance of the SQL class
+        /// </summary>
         public clsMainSQL sqlString = new clsMainSQL();
+        /// <summary>
+        /// Instance of the Item List
+        /// </summary>
         public List<DataRow> itemList = new List<DataRow>();
+        /// <summary>
+        /// Instace of the item list that is queued to be inserted
+        /// </summary>
         public List<DataRow> itemInsertList = new List<DataRow>();
 
+        /// <summary>
+        /// Keeps track of whether the invoice is getting editted
+        /// </summary>
         public bool editing = false;
+        /// <summary>
+        /// Keeps track of whether an invoice is being created
+        /// </summary>
         public bool creating = false;
-
+        /// <summary>
+        /// String that holds SQL statements
+        /// </summary>
         string sSQL;
+        /// <summary>
+        /// Setter/Getter Method for sSQL
+        /// </summary>
         public string SSQL
         {
             get { return sSQL; }
             set { sSQL = value; }
         }
 
+        /// <summary>
+        /// Holds the number of rows the Query returned
+        /// </summary>
         int IRet;
 
+        /// <summary>
+        /// Getter/Setter method for IRet
+        /// </summary>
         public int iret
         {
             get { return IRet; }
             set { IRet = value; }
         }
-
-        int InvoiceID;
-
-        public int invoiceid
-        {
-            get { return InvoiceID; }
-            set { InvoiceID = value; }
-        }
+        /// <summary>
+        /// Variable that occasionally holds the cost of a certain invoice
+        /// </summary>
         int InvoiceCost;
-
+        /// <summary>
+        /// Getter/Setter Method for InvoiceCost
+        /// </summary>
         public int invoicecost
         {
             get { return InvoiceCost; }
             set { InvoiceCost = value; }
         }
+        /// <summary>
+        /// Occasionally holds the value for the invoice date
+        /// </summary>
         DateTime InvoiceDate;
 
+        /// <summary>
+        /// Getter/Setter method for the InvoiceDate
+        /// </summary>
         public DateTime invoicedate
         {
             get { return InvoiceDate; }
             set { InvoiceDate = value; }
         }
 
-
+        /// <summary>
+        /// Returns a certain invoice by the InvoiceNum
+        /// </summary>
+        /// <param name="ID"></param>
         public void GetInvoiceByID(int ID)
         {
             int count = Int32.Parse(db.ExecuteScalarSQL(sqlString.GetInvoiceRowCount(ID)));
@@ -81,7 +119,11 @@ namespace GroupProject
             }
 
         }
-
+        /// <summary>
+        /// Removes a selected item from the invoice
+        /// </summary>
+        /// <param name="InvoiceID"></param>
+        /// <param name="LineItemNumber"></param>
         public void RemoveItemFromGrid(int InvoiceID, int LineItemNumber)
         {
             SSQL = sqlString.RemoveFromDataGrid(LineItemNumber, InvoiceID);
@@ -89,19 +131,29 @@ namespace GroupProject
             db.ExecuteNonQuery(SSQL);
         }
 
-
+        /// <summary>
+        /// Reloads the item list with all the items in the database
+        /// </summary>
         public void UpdateItemList()
         {
             SSQL = sqlString.getItemList;
             ds = db.ExecuteSQLStatement(SSQL, ref IRet);
         }
-
+        /// <summary>
+        /// Inserts and item into the invoice
+        /// </summary>
+        /// <param name="InvoiceID"></param>
+        /// <param name="LineNum"></param>
+        /// <param name="ItemCode"></param>
        public void InsertItemIntoInvoice(int InvoiceID, int LineNum, string ItemCode)
         {
             SSQL = sqlString.InsertItemIntoInvoice(InvoiceID, LineNum, ItemCode);
             db.ExecuteNonQuery(SSQL);
         }
-
+        /// <summary>
+        /// Deletes an invoice from the database
+        /// </summary>
+        /// <param name="InvoiceID"></param>
         public void RemoveInvoice(int InvoiceID)
         {
             SSQL = sqlString.DeleteInvoiceFromLine(InvoiceID);
@@ -109,38 +161,59 @@ namespace GroupProject
             SSQL = sqlString.DeleteInvoiceFromInvoice(InvoiceID);
             db.ExecuteNonQuery(SSQL);
         }
-
+        /// <summary>
+        /// Updates the Date for an invoice
+        /// </summary>
+        /// <param name="InvoiceID"></param>
+        /// <param name="newTime"></param>
         public void UpdateInvoiceTime(int InvoiceID, DateTime newTime)
         {
             SSQL = sqlString.UpdateInvoiceDate(InvoiceID, newTime);
             db.ExecuteNonQuery(SSQL);
         }
-
+        /// <summary>
+        /// Inserts a new invoice into the database
+        /// </summary>
+        /// <param name="newDate"></param>
         public void CreateNewInvoice(DateTime newDate)
         {
             SSQL = sqlString.CreateNewInvoice(newDate);
             db.ExecuteNonQuery(SSQL);
         }
-
+        /// <summary>
+        /// Retrives the InvoiceNum of the newly created Invoice
+        /// </summary>
+        /// <returns></returns>
         public string GetnewInvoiceID()
         {
             SSQL = sqlString.GetNewInvoiceNumber;
             return db.ExecuteScalarSQL(SSQL);
         }
-
+        /// <summary>
+        /// Gets the sum of all the item costs for a certain invoice
+        /// </summary>
+        /// <param name="InvoiceID"></param>
+        /// <returns></returns>
         public int GetCostSum(int InvoiceID)
         {
             SSQL = sqlString.GetCostSum(InvoiceID);
             return Int32.Parse(db.ExecuteScalarSQL(SSQL));
         } 
-
+        /// <summary>
+        /// Takes the sum of all the items for a certain invoice and updates the TotalCost value
+        /// </summary>
+        /// <param name="InvoiceID"></param>
         public void UpdateCost(int InvoiceID)
         {
             invoicecost = GetCostSum(InvoiceID);
             SSQL = sqlString.UpdateCost(InvoiceID, GetCostSum(InvoiceID));
             db.ExecuteNonQuery(SSQL);
         }
-
+        /// <summary>
+        /// Checks to see if the inputted Invoice number matches with an existing Invoice in the database
+        /// </summary>
+        /// <param name="InvoiceID"></param>
+        /// <returns></returns>
         public bool ValidInvoice(string InvoiceID)
         {
             if (InvoiceID != "")
