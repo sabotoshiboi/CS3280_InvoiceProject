@@ -40,7 +40,6 @@ namespace GroupProject
             {
                 addingItem = true;
                 AddingItem();
-                //clsItemsSQL.AddNewItem();
             }
             catch (Exception ex)
             {
@@ -55,9 +54,12 @@ namespace GroupProject
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
             try
-            {   
-                editingItem = true;
-                EditingItem();
+            {
+                if (itemsDataGrid.SelectedIndex > -1)
+                {
+                    editingItem = true;
+                    EditingItem();
+                }
             }
             catch (Exception ex)
             {
@@ -116,9 +118,9 @@ namespace GroupProject
             }
             else
             {
-                deleteButton.IsEnabled = false;
-                itemsDataGrid.IsEnabled = false;
-                addButton.IsEnabled = false;
+                deleteButton.IsEnabled = true;
+                addButton.IsEnabled = true;
+                itemsDataGrid.Visibility = Visibility.Visible;
                 editCtrls.Visibility = Visibility.Collapsed;
             }
         }
@@ -138,8 +140,8 @@ namespace GroupProject
             {
                 deleteButton.IsEnabled = true;
                 itemsDataGrid.IsEnabled = true;
-                addButton.IsEnabled = true;
-                editCtrls.Visibility = Visibility.Collapsed;
+                addButton.IsEnabled = true;               
+                addCtrls.Visibility = Visibility.Collapsed;
             }
         }
         /// <summary>
@@ -151,11 +153,10 @@ namespace GroupProject
         {
             try
             {
-                double cost;
-                double.TryParse(newItemCostBox.Text, out cost);
-                clsItemsSQL.AddNewItem(newItemCodeBox.Text, newItemDescBox.Text, cost);
+                clsItemsSQL.AddNewItem(newItemCodeBox.Text, newItemDescBox.Text, Convert.ToInt32(newItemCostBox.Text));
                 addingItem = false;
                 AddingItem();
+                itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
             }
             catch (Exception ex)
             {
@@ -172,11 +173,10 @@ namespace GroupProject
             try
             {
                 clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
-                double cost;
-                double.TryParse(editCostBox.Text, out cost);
-                clsItemsSQL.UpdateItemData(editDescBox.Text, Item.ItemCode, cost);
+                clsItemsSQL.UpdateItemData(editDescBox.Text, Item.ItemCode, Convert.ToInt32(editCostBox.Text));
                 editingItem = false;
                 EditingItem();
+                itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
             }
             catch (Exception ex)
             {
