@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 
 namespace GroupProject
@@ -47,18 +48,8 @@ namespace GroupProject
             InitializeComponent();
             sqlClass = new clsMainSQL();
 
-            busLog.UpdateItemList();
-
-            for(int i = 0; i < busLog.iret; i++)
-            {
-                busLog.itemList.Add(busLog.ds.Tables[0].Rows[i]);
-            }
-
-            for(int i = 0; i < busLog.itemList.Count; i++)
-            {
-                ItemsListComboBox.Items.Add(busLog.itemList[i][1]);
-            }
-
+            
+            LoadComboBox();
             EditInvoiceButton.IsEnabled = false;
             DeleteInvoiceButton.IsEnabled = false;
             InvoiceNumberTextBox.Focus();
@@ -71,7 +62,15 @@ namespace GroupProject
         /// <param name="e"></param>
         private void MenuExit_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            try
+            {
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -81,21 +80,17 @@ namespace GroupProject
         /// <param name="e"></param>
         private void MenuSearch_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            * SearchWindowForm = new SearchWindow(InvoiceID);
-            * 
-            * 
-            * SearchWindowForm.ShowDialogue;
-            * SearchWindowForm.InvoiceID = sqlClass.iInvoiceID
-            * this.Show();
-            * 
-            * When an invoice is selected on the search window, the selected invoice ID will update in the invoice textbox in the main window
-            * The SQL statement will be called to update all the respective data for that invoice including the items list
-            */
-            SearchWindowForm = new wndSearch();
-
-            SearchWindowForm.ShowDialog();
-            this.Show();
+            try
+            {
+                SearchWindowForm = new wndSearch();
+                SearchWindowForm.ShowDialog();
+                this.Show();
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -105,22 +100,17 @@ namespace GroupProject
         /// <param name="e"></param>
         private void MenuItems_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            * ItemWindowForm = new ItemsWindow();
-            * 
-            * 
-            * ItemsWindowForm.ShowDialogue;
-            * 
-            * When the Item window closes, an SQL statement will be called to re-fill the Combobox with all present items so that any removed or added items will
-            * be applied into the combo box.
-            * 
-            * this.Show();
-            * 
-            * 
-            */
-            ItemWindowForm = new wndItems();
-            ItemWindowForm.ShowDialog();
-
+            try
+            {
+                ItemWindowForm = new wndItems();
+                ItemWindowForm.ShowDialog();
+                LoadComboBox();
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
 
         /// <summary>
@@ -129,30 +119,38 @@ namespace GroupProject
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void InvoiceNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        { 
-            if (!busLog.creating)
+        {
+            try
             {
-                if (InvoiceNumberTextBox.Text != "")
+                if (!busLog.creating)
                 {
-                    RefreshDataGrid();
-                }
+                    if (InvoiceNumberTextBox.Text != "")
+                    {
+                        RefreshDataGrid();
+                    }
 
-                AddButton.IsEnabled = false;
-                RemoveButton.IsEnabled = false;
-                
+                    AddButton.IsEnabled = false;
+                    RemoveButton.IsEnabled = false;
 
-               if (busLog.ValidInvoice(InvoiceNumberTextBox.Text))
-                {
-                    DeleteInvoiceButton.IsEnabled = true;
-                    EditInvoiceButton.IsEnabled = true;
-                }
 
-                else
-                {
-                    CreateInvoiceButton.IsEnabled = true;
-                    DeleteInvoiceButton.IsEnabled = false;
-                    EditInvoiceButton.IsEnabled = false;
+                    if (busLog.ValidInvoice(InvoiceNumberTextBox.Text))
+                    {
+                        DeleteInvoiceButton.IsEnabled = true;
+                        EditInvoiceButton.IsEnabled = true;
+                    }
+
+                    else
+                    {
+                        CreateInvoiceButton.IsEnabled = true;
+                        DeleteInvoiceButton.IsEnabled = false;
+                        EditInvoiceButton.IsEnabled = false;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
 
         }
@@ -163,8 +161,16 @@ namespace GroupProject
         /// <param name="e"></param>
         private void InvoiceNumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
+            try
+            {
+                Regex regex = new Regex("[^0-9]+");
+                e.Handled = regex.IsMatch(e.Text);
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
         /// <summary>
         /// Called when the Data grid changes
@@ -173,9 +179,17 @@ namespace GroupProject
         /// <param name="e"></param>
         private void InvoiceItemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (InvoiceItemsDataGrid.SelectedIndex >= 0 && busLog.editing)
+            try
             {
-                RemoveButton.IsEnabled = true;
+                if (InvoiceItemsDataGrid.SelectedIndex >= 0 && busLog.editing)
+                {
+                    RemoveButton.IsEnabled = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
         /// <summary>
@@ -185,16 +199,24 @@ namespace GroupProject
         /// <param name="e"></param>
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
-            busLog.RemoveItemFromGrid(Int32.Parse(InvoiceNumberTextBox.Text), Int32.Parse(busLog.ds.Tables[0].Rows[InvoiceItemsDataGrid.SelectedIndex][3].ToString()));
-            busLog.UpdateCost(Int32.Parse(InvoiceNumberTextBox.Text));
-            RefreshDataGrid();
-            if (InvoiceItemsDataGrid.Items.Count > 0)
+            try
             {
-                InvoiceItemsDataGrid.SelectedIndex = InvoiceItemsDataGrid.Items.Count - 1;
+                busLog.RemoveItemFromGrid(Int32.Parse(InvoiceNumberTextBox.Text), Int32.Parse(busLog.ds.Tables[0].Rows[InvoiceItemsDataGrid.SelectedIndex][3].ToString()));
+                busLog.UpdateCost(Int32.Parse(InvoiceNumberTextBox.Text));
+                RefreshDataGrid();
+                if (InvoiceItemsDataGrid.Items.Count > 0)
+                {
+                    InvoiceItemsDataGrid.SelectedIndex = InvoiceItemsDataGrid.Items.Count - 1;
+                }
+                else
+                {
+                    RemoveButton.IsEnabled = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                RemoveButton.IsEnabled = false;
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
         /// <summary>
@@ -202,19 +224,27 @@ namespace GroupProject
         /// </summary>
         private void RefreshDataGrid()
         {
-            if (!busLog.creating)
+            try
             {
-                busLog.GetInvoiceByID(Int32.Parse(InvoiceNumberTextBox.Text));
-                InvoiceDatePicker.SelectedDate = busLog.invoicedate;
-                InvoiceCostTextBox.Text = "$ " + busLog.invoicecost.ToString();
+                if (!busLog.creating)
+                {
+                    busLog.GetInvoiceByID(Int32.Parse(InvoiceNumberTextBox.Text));
+                    InvoiceDatePicker.SelectedDate = busLog.invoicedate;
+                    InvoiceCostTextBox.Text = "$ " + busLog.invoicecost.ToString();
 
-                InvoiceItemsDataGrid.ItemsSource = busLog.ds.Tables[0].DefaultView;
+                    InvoiceItemsDataGrid.ItemsSource = busLog.ds.Tables[0].DefaultView;
 
+                }
+                else
+                {
+                    InvoiceItemsDataGrid.ItemsSource = busLog.itemInsertList;
+
+                }
             }
-            else
+            catch (Exception ex)
             {
-                InvoiceItemsDataGrid.ItemsSource = busLog.itemInsertList;
-
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
         /// <summary>
@@ -224,21 +254,17 @@ namespace GroupProject
         /// <param name="e"></param>
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            if (busLog.editing)
+            try
             {
                 busLog.itemInsertList.Add(busLog.itemList[ItemsListComboBox.SelectedIndex]);
                 lbItemQueue.Items.Add(busLog.itemList[ItemsListComboBox.SelectedIndex][1]);
+                RefreshDataGrid();
             }
-            if (busLog.creating)
+            catch (Exception ex)
             {
-
-                busLog.itemInsertList.Add(busLog.itemList[ItemsListComboBox.SelectedIndex]);
-
-                lbItemQueue.Items.Add(busLog.itemList[ItemsListComboBox.SelectedIndex][1]);
-
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
-
-            RefreshDataGrid();
 
         }
         /// <summary>
@@ -248,13 +274,21 @@ namespace GroupProject
         /// <param name="e"></param>
         private void ItemsListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(ItemsListComboBox.SelectedIndex >= 0 )
+            try
             {
-                ItemCostTextBox.Text = "$" + busLog.itemList[ItemsListComboBox.SelectedIndex][2].ToString();
-                if (busLog.editing || busLog.creating)
+                if (ItemsListComboBox.SelectedIndex >= 0)
                 {
-                    AddButton.IsEnabled = true;
+                    ItemCostTextBox.Text = "$" + busLog.itemList[ItemsListComboBox.SelectedIndex][2].ToString();
+                    if (busLog.editing || busLog.creating)
+                    {
+                        AddButton.IsEnabled = true;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
         /// <summary>
@@ -264,14 +298,22 @@ namespace GroupProject
         /// <param name="e"></param>
         private void DeleteInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
-            var choice = MessageBox.Show("Delete this Invoice?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (choice == MessageBoxResult.Yes)
+            try
             {
-                busLog.RemoveInvoice(Int32.Parse(InvoiceNumberTextBox.Text));
-                RefreshDataGrid();
-                CreateInvoiceButton.IsEnabled = true;
-                DeleteInvoiceButton.IsEnabled = false;
-                EditInvoiceButton.IsEnabled = false;
+                var choice = MessageBox.Show("Delete this Invoice?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (choice == MessageBoxResult.Yes)
+                {
+                    busLog.RemoveInvoice(Int32.Parse(InvoiceNumberTextBox.Text));
+                    RefreshDataGrid();
+                    CreateInvoiceButton.IsEnabled = true;
+                    DeleteInvoiceButton.IsEnabled = false;
+                    EditInvoiceButton.IsEnabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
         /// <summary>
@@ -281,22 +323,30 @@ namespace GroupProject
         /// <param name="e"></param>
         private void EditInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
-            busLog.editing = true;
-            CreateInvoiceButton.IsEnabled = false;
-            DeleteInvoiceButton.IsEnabled = false;
-            EditInvoiceButton.IsEnabled = false;
-            SaveButton.IsEnabled = true;
-            InvoiceNumberTextBox.IsEnabled = false;
-            InvoiceDatePicker.IsEnabled = true;
-
-            if(ItemsListComboBox.SelectedIndex > 0)
+            try
             {
-                AddButton.IsEnabled = true;
+                busLog.editing = true;
+                CreateInvoiceButton.IsEnabled = false;
+                DeleteInvoiceButton.IsEnabled = false;
+                EditInvoiceButton.IsEnabled = false;
+                SaveButton.IsEnabled = true;
+                InvoiceNumberTextBox.IsEnabled = false;
+                InvoiceDatePicker.IsEnabled = true;
+
+                if (ItemsListComboBox.SelectedIndex > 0)
+                {
+                    AddButton.IsEnabled = true;
+                }
+
+                if (InvoiceItemsDataGrid.SelectedIndex > 0)
+                {
+                    RemoveButton.IsEnabled = true;
+                }
             }
-
-            if(InvoiceItemsDataGrid.SelectedIndex > 0)
+            catch (Exception ex)
             {
-                RemoveButton.IsEnabled = true;
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
         /// <summary>
@@ -306,41 +356,67 @@ namespace GroupProject
         /// <param name="e"></param>
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (busLog.editing)
+            try
             {
-                busLog.editing = false;
-                DeleteInvoiceButton.IsEnabled = true;
-                EditInvoiceButton.IsEnabled = true;
-                SaveButton.IsEnabled = false;
-                InvoiceNumberTextBox.IsEnabled = true;
-                InvoiceDatePicker.IsEnabled = false;
+                if (busLog.editing)
+                {
+                    busLog.editing = false;
+                    DeleteInvoiceButton.IsEnabled = true;
+                    EditInvoiceButton.IsEnabled = true;
+                    SaveButton.IsEnabled = false;
+                    InvoiceNumberTextBox.IsEnabled = true;
+                    InvoiceDatePicker.IsEnabled = false;
 
-                AddButton.IsEnabled = false;
-                RemoveButton.IsEnabled = false;
+                    AddButton.IsEnabled = false;
+                    RemoveButton.IsEnabled = false;
+
+                    for (int i = 0; i < busLog.itemInsertList.Count; i++)
+                    {
+                        busLog.InsertItemIntoInvoice(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceItemsDataGrid.Items.Count + 1, busLog.itemInsertList[i][0].ToString());
+                        RefreshDataGrid();
+                    }
+                    busLog.itemInsertList.Clear();
+                    busLog.UpdateCost(Int32.Parse(InvoiceNumberTextBox.Text));
+                    InvoiceCostTextBox.Text = "$" + busLog.invoicecost.ToString();
+                    lbItemQueue.Items.Clear();
+                    CreateInvoiceButton.IsEnabled = true;
+                    InvoiceDatePicker.IsEnabled = false;
+                }
+
+                if (busLog.creating)
+                {
+                    if (!InvoiceDatePicker.SelectedDate.HasValue)
+                    {
+                        MessageBox.Show("Please enter a Date", "Date Confirmation", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    }
+                    else
+                    {
+                        busLog.creating = false;
+                        busLog.CreateNewInvoice(InvoiceDatePicker.SelectedDate.Value);
+                        InvoiceNumberTextBox.IsReadOnly = false;
+                        InvoiceNumberTextBox.Text = busLog.GetnewInvoiceID();
+
+                        for (int i = 0; i < busLog.itemInsertList.Count; i++)
+                        {
+                            busLog.InsertItemIntoInvoice(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceItemsDataGrid.Items.Count + 1, busLog.itemInsertList[i][0].ToString());
+                            RefreshDataGrid();
+                        }
+                        busLog.itemInsertList.Clear();
+                        busLog.UpdateCost(Int32.Parse(InvoiceNumberTextBox.Text));
+                        InvoiceCostTextBox.Text = "$" + busLog.invoicecost.ToString();
+                        lbItemQueue.Items.Clear();
+                        CreateInvoiceButton.IsEnabled = true;
+                        InvoiceDatePicker.IsEnabled = false;
+                    }
+                }
+
+                
             }
-
-            if (busLog.creating)
+            catch (Exception ex)
             {
-                busLog.creating = false;
-                busLog.CreateNewInvoice(InvoiceDatePicker.SelectedDate.Value);
-                InvoiceNumberTextBox.IsReadOnly = false;
-                InvoiceNumberTextBox.Text = busLog.GetnewInvoiceID();
-
-
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
-
-
-            for (int i = 0; i < busLog.itemInsertList.Count; i++)
-            {
-                busLog.InsertItemIntoInvoice(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceItemsDataGrid.Items.Count + 1, busLog.itemInsertList[i][0].ToString());
-                RefreshDataGrid();
-            }
-            busLog.itemInsertList.Clear();
-            busLog.UpdateCost(Int32.Parse(InvoiceNumberTextBox.Text));
-            InvoiceCostTextBox.Text = "$" + busLog.invoicecost.ToString();
-            lbItemQueue.Items.Clear();
-            CreateInvoiceButton.IsEnabled = true;
-            InvoiceDatePicker.IsEnabled = false;
         }
         /// <summary>
         /// Called when the Date in the Date Picker changes
@@ -349,9 +425,17 @@ namespace GroupProject
         /// <param name="e"></param>
         private void InvoiceDatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (busLog.editing)
+            try
             {
-                busLog.UpdateInvoiceTime(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceDatePicker.SelectedDate.Value);
+                if (busLog.editing)
+                {
+                    busLog.UpdateInvoiceTime(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceDatePicker.SelectedDate.Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
         }
         /// <summary>
@@ -361,21 +445,56 @@ namespace GroupProject
         /// <param name="e"></param>
         private void CreateInvoiceButton_Click(object sender, RoutedEventArgs e)
         {
-            busLog.creating = true;
+            try
+            {
+                busLog.creating = true;
 
-            InvoiceNumberTextBox.IsReadOnly = true;
-            InvoiceNumberTextBox.Text = "TBD";
-            InvoiceCostTextBox.Text = "";
+                InvoiceNumberTextBox.IsReadOnly = true;
+                InvoiceNumberTextBox.Text = "TBD";
+                InvoiceCostTextBox.Text = "";
 
-            InvoiceDatePicker.IsEnabled = true;
-            EditInvoiceButton.IsEnabled = false;
-            RemoveButton.IsEnabled = false;
-            CreateInvoiceButton.IsEnabled = false;
+                InvoiceDatePicker.IsEnabled = true;
+                EditInvoiceButton.IsEnabled = false;
+                RemoveButton.IsEnabled = false;
+                CreateInvoiceButton.IsEnabled = false;
 
-            SaveButton.IsEnabled = true;
+                SaveButton.IsEnabled = true;
 
-            InvoiceItemsDataGrid.ItemsSource = null;
-            InvoiceItemsDataGrid.Items.Clear();
+                InvoiceItemsDataGrid.ItemsSource = null;
+                InvoiceItemsDataGrid.Items.Clear();
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+        /// <summary>
+        /// Updates the combo box to reflect any changes to the inventory
+        /// </summary>
+        private void LoadComboBox()
+        {
+            try
+            {
+                ItemsListComboBox.Items.Clear();
+                busLog.itemList.Clear();
+                busLog.UpdateItemList();
+
+                for (int i = 0; i < busLog.iret; i++)
+                {
+                    busLog.itemList.Add(busLog.ds.Tables[0].Rows[i]);
+                }
+
+                for (int i = 0; i < busLog.itemList.Count; i++)
+                {
+                    ItemsListComboBox.Items.Add(busLog.itemList[i][1]);
+                }
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
         }
     }
 }
