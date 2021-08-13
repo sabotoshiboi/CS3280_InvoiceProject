@@ -11,6 +11,8 @@ namespace GroupProject
 {
     class clsItemsSQL
     {
+        wndItems wndItems;
+
         private clsDataAccess db;
         /// <summary>
         /// this method helps display information for potential errors
@@ -34,12 +36,13 @@ namespace GroupProject
         /// </summary>
         /// <param name="sInvoiceNum"></param>
         /// <returns></returns>
-        public void SelectInvoiceData(string sItemCode)
-
+        public string SelectInvoiceData(string sItemCode)
         {
             try
             {
-                string sSQL = "SELECT DISTINCT(sInvoiceNum) FROM LineItems WHERE ItemCode =" + sItemCode;
+                string sSQL = "SELECT DISTINCT(InvoiceNum) FROM LineItems WHERE ItemCode ='" + sItemCode + "'";
+                string results = db.ExecuteScalarSQL(sSQL);
+                return results;
             }
             catch (Exception ex)
             {
@@ -142,7 +145,7 @@ namespace GroupProject
         {
             try
             {
-                string sSQL = "DELETE FROM ItemDesc WHERE ItemCode = " + sItemCode;
+                string sSQL = "DELETE FROM ItemDesc WHERE ItemCode = '" + sItemCode + "'";
                 db.ExecuteNonQuery(sSQL);
             }
             catch (Exception ex)
