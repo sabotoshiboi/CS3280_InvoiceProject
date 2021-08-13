@@ -105,6 +105,8 @@ namespace GroupProject
                 ItemWindowForm = new wndItems();
                 ItemWindowForm.ShowDialog();
                 LoadComboBox();
+                busLog.UpdateCost(Int32.Parse(InvoiceNumberTextBox.Text));
+                RefreshDataGrid();
             }
             catch (Exception ex)
             {
