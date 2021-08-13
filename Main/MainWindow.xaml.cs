@@ -333,6 +333,7 @@ namespace GroupProject
                 InvoiceNumberTextBox.IsEnabled = false;
                 InvoiceDatePicker.IsEnabled = true;
                 InvoiceItemsDataGrid.IsEnabled = true;
+                MenuBar.IsEnabled = false;
 
                 if (ItemsListComboBox.SelectedIndex > 0)
                 {
@@ -370,6 +371,8 @@ namespace GroupProject
                     InvoiceItemsDataGrid.IsEnabled = false;
                     AddButton.IsEnabled = false;
                     RemoveButton.IsEnabled = false;
+                    MenuBar.IsEnabled = true;
+                    
 
                     for (int i = 0; i < busLog.itemInsertList.Count; i++)
                     {
@@ -408,6 +411,7 @@ namespace GroupProject
                         lbItemQueue.Items.Clear();
                         CreateInvoiceButton.IsEnabled = true;
                         InvoiceDatePicker.IsEnabled = false;
+                        MenuBar.IsEnabled = true;
                     }
                 }
 
@@ -458,6 +462,7 @@ namespace GroupProject
                 EditInvoiceButton.IsEnabled = false;
                 RemoveButton.IsEnabled = false;
                 CreateInvoiceButton.IsEnabled = false;
+                MenuBar.IsEnabled = false;
 
                 SaveButton.IsEnabled = true;
 
