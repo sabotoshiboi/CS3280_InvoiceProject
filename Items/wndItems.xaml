@@ -35,5 +35,13 @@
 
         </Canvas>
         <Button x:Name="closeButton" Content="Close" HorizontalAlignment="Left" Margin="85,364,0,0" VerticalAlignment="Top" Width="45" Height="45" Click="closeButton_Click"/>
+        <Canvas x:Name="selectedItemCanvas" HorizontalAlignment="Left" Height="200" Margin="10,102,0,0" VerticalAlignment="Top" Width="120">
+            <Label x:Name="itemCodeLbl" Content="" Canvas.Top="26"/>
+            <Label x:Name="itemDescLbl" Content="" Canvas.Top="78"/>
+            <Label x:Name="itemCostLbl" Content="" Canvas.Top="130"/>
+            <Label x:Name="___No_Name_" Content="Item Code"/>
+            <Label Content="Item Description" Canvas.Top="52"/>
+            <Label Content="Item Cost" Canvas.Top="104"/>
+        </Canvas>
     </Grid>
 </Window>
