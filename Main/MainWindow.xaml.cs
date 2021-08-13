@@ -332,6 +332,7 @@ namespace GroupProject
                 SaveButton.IsEnabled = true;
                 InvoiceNumberTextBox.IsEnabled = false;
                 InvoiceDatePicker.IsEnabled = true;
+                InvoiceItemsDataGrid.IsEnabled = true;
 
                 if (ItemsListComboBox.SelectedIndex > 0)
                 {
@@ -366,7 +367,7 @@ namespace GroupProject
                     SaveButton.IsEnabled = false;
                     InvoiceNumberTextBox.IsEnabled = true;
                     InvoiceDatePicker.IsEnabled = false;
-
+                    InvoiceItemsDataGrid.IsEnabled = false;
                     AddButton.IsEnabled = false;
                     RemoveButton.IsEnabled = false;
 
