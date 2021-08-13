@@ -22,17 +22,7 @@ namespace GroupProject
     public partial class wndItems : Window
     {
         /// <summary>
-        /// creating a main window 
-        /// </summary>
-        MainWindow MainWindow = new MainWindow();
-
-        /// <summary>
-        /// creating a class object for Items
-        /// </summary>
-        clsMainLogic clsMainLogic = new clsMainLogic();
-
-        /// <summary>
-        /// creating an SQL objest to call statements 
+        /// creating an SQL object to call statements 
         /// </summary>
         clsItemsSQL clsItemsSQL = new clsItemsSQL();
 
@@ -41,6 +31,7 @@ namespace GroupProject
         /// </summary>
         public bool editingItem;
         public bool addingItem;
+
         public wndItems()
         {
             InitializeComponent();
@@ -74,8 +65,7 @@ namespace GroupProject
             {
                 if (itemsDataGrid.SelectedIndex > -1)
                 {
-                    clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
-                    
+                    clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;                    
                     editDescBox.Text = Item.ItemDesc;
                     editCostBox.Text = Item.ItemCost.ToString();
                     editingItem = true;
@@ -96,62 +86,21 @@ namespace GroupProject
         {
             try
             {
-                /*
-                if (itemsDataGrid.SelectedIndex > -1 && FIND OUT IF ITEM IS ON ACTIVE INVOICE HERE!!!!!!!!!!!)
+                clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
+                string invoiceNum = clsItemsSQL.SelectInvoiceData(Item.ItemCode.ToString());
+                if (itemsDataGrid.SelectedIndex > -1 && invoiceNum == "")
                 {
-                    clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
                     clsItemsSQL.DeleteItem(Item.ItemCode);
+                    itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
                 }
-                */
+                else if (itemsDataGrid.SelectedIndex > -1 && invoiceNum != "")
+                {
+                    MessageBox.Show("This item is used on Invoice Number " + invoiceNum + ", please remove item from invoice before deleting");
+                }
             }
             catch (Exception ex)
             {
                 clsItemsSQL.HandleError(MethodBase.GetCurrentMethod().DeclaringType.Name, MethodBase.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-        /// <summary>
-        /// setting up editing mode for user
-        /// </summary>
-        public void EditingItem()
-        {
-            if (editingItem)
-            {
-                closeButton.IsEnabled = false;
-                deleteButton.IsEnabled = false;
-                addButton.IsEnabled = false;
-                itemsDataGrid.IsHitTestVisible = false;
-                editCtrls.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                closeButton.IsEnabled = true;
-                deleteButton.IsEnabled = true;
-                addButton.IsEnabled = true;
-                itemsDataGrid.IsHitTestVisible = true;
-                editCtrls.Visibility = Visibility.Collapsed;
-            }
-        }
-        /// <summary>
-        /// setting up new item mode for user
-        /// </summary>
-        public void AddingItem()
-        {
-            if (addingItem)
-            {
-                deleteButton.IsEnabled = false;
-                itemsDataGrid.IsEnabled = false;
-                addButton.IsEnabled = false;
-                addCtrls.Visibility = Visibility.Visible;
-                closeButton.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                closeButton.IsEnabled = true;
-                deleteButton.IsEnabled = true;
-                itemsDataGrid.IsEnabled = true;
-                addButton.IsEnabled = true;
-                closeButton.Visibility = Visibility.Visible;
-                addCtrls.Visibility = Visibility.Collapsed;
             }
         }
         /// <summary>
@@ -170,7 +119,7 @@ namespace GroupProject
 
                     if (Item.ItemCode == newItemCodeBox.Text)
                     {
-                        codeTaken = true;   
+                        codeTaken = true;
                     }
                 }
                 if (!codeTaken)
@@ -179,6 +128,13 @@ namespace GroupProject
                     addingItem = false;
                     AddingItem();
                     itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
+                    /*
+                     * 
+                     * THIS NEEDS WORK!!!!
+                     * ------------------------------------------------------------------------------
+                     * this is where I am tryin to update the main window with any changes to items but this code doesn't seem to work
+                     * 
+                     * 
                     clsMainLogic.UpdateItemList();
                     for (int i = 0; i < clsMainLogic.iret; i++)
                     {
@@ -189,6 +145,7 @@ namespace GroupProject
                     {
                         MainWindow.ItemsListComboBox.Items.Add(clsMainLogic.itemList[i][1]);
                     }
+                    */
                 }
                 else
                     addErrorLabel.Content = "Please select a new \nunused Item Code";
@@ -212,16 +169,6 @@ namespace GroupProject
                 editingItem = false;
                 EditingItem();
                 itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
-                clsMainLogic.UpdateItemList();
-                for (int i = 0; i < clsMainLogic.iret; i++)
-                {
-                    clsMainLogic.itemList.Add(clsMainLogic.ds.Tables[0].Rows[i]);
-                }
-
-                for (int i = 0; i < clsMainLogic.itemList.Count; i++)
-                {
-                    MainWindow.ItemsListComboBox.Items.Add(clsMainLogic.itemList[i][1]);
-                }
             }
             catch (Exception ex)
             {
@@ -251,7 +198,68 @@ namespace GroupProject
         /// <param name="e"></param>
         private void itemsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            if (itemsDataGrid.SelectedIndex > -1)
+            {
+                clsItemsLogic Item = (clsItemsLogic)itemsDataGrid.SelectedItem;
+                itemCodeLbl.Content = Item.ItemCode;
+                itemDescLbl.Content = Item.ItemDesc;
+                itemCostLbl.Content = Item.ItemCost;
+            }
+            else
+            {
+                itemCodeLbl.Content = "";
+                itemDescLbl.Content = "";
+                itemCostLbl.Content = "";
+            }
+        }
+        /// <summary>
+        /// setting up editing mode for user
+        /// </summary>
+        public void EditingItem()
+        {
+            if (editingItem)
+            {
+                closeButton.IsEnabled = false;
+                deleteButton.IsEnabled = false;
+                addButton.IsEnabled = false;
+                itemsDataGrid.IsHitTestVisible = false;
+                selectedItemCanvas.Visibility = Visibility.Collapsed;
+                editCtrls.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                closeButton.IsEnabled = true;
+                deleteButton.IsEnabled = true;
+                addButton.IsEnabled = true;
+                itemsDataGrid.IsHitTestVisible = true;
+                selectedItemCanvas.Visibility = Visibility.Visible;
+                editCtrls.Visibility = Visibility.Collapsed;
+            }
+        }
+        /// <summary>
+        /// setting up new item mode for user
+        /// </summary>
+        public void AddingItem()
+        {
+            if (addingItem)
+            {
+                deleteButton.IsEnabled = false;
+                itemsDataGrid.IsEnabled = false;
+                addButton.IsEnabled = false;
+                selectedItemCanvas.Visibility = Visibility.Collapsed;
+                addCtrls.Visibility = Visibility.Visible;
+                closeButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                closeButton.IsEnabled = true;
+                deleteButton.IsEnabled = true;
+                itemsDataGrid.IsEnabled = true;
+                addButton.IsEnabled = true;
+                selectedItemCanvas.Visibility = Visibility.Visible;
+                closeButton.Visibility = Visibility.Visible;
+                addCtrls.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }
