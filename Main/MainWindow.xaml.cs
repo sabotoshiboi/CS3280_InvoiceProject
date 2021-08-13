@@ -231,14 +231,11 @@ namespace GroupProject
                     busLog.GetInvoiceByID(Int32.Parse(InvoiceNumberTextBox.Text));
                     InvoiceDatePicker.SelectedDate = busLog.invoicedate;
                     InvoiceCostTextBox.Text = "$ " + busLog.invoicecost.ToString();
-
                     InvoiceItemsDataGrid.ItemsSource = busLog.ds.Tables[0].DefaultView;
-
                 }
                 else
                 {
                     InvoiceItemsDataGrid.ItemsSource = busLog.itemInsertList;
-
                 }
             }
             catch (Exception ex)
@@ -265,7 +262,6 @@ namespace GroupProject
                 busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
                     MethodInfo.GetCurrentMethod().Name, ex.Message);
             }
-
         }
         /// <summary>
         /// Called when the Combo box selection changes
@@ -325,15 +321,7 @@ namespace GroupProject
         {
             try
             {
-                busLog.editing = true;
-                CreateInvoiceButton.IsEnabled = false;
-                DeleteInvoiceButton.IsEnabled = false;
-                EditInvoiceButton.IsEnabled = false;
-                SaveButton.IsEnabled = true;
-                InvoiceNumberTextBox.IsEnabled = false;
-                InvoiceDatePicker.IsEnabled = true;
-                InvoiceItemsDataGrid.IsEnabled = true;
-                MenuBar.IsEnabled = false;
+                ToggleMode("Editing");
 
                 if (ItemsListComboBox.SelectedIndex > 0)
                 {
@@ -362,23 +350,14 @@ namespace GroupProject
             {
                 if (busLog.editing)
                 {
-                    busLog.editing = false;
-                    DeleteInvoiceButton.IsEnabled = true;
-                    EditInvoiceButton.IsEnabled = true;
-                    SaveButton.IsEnabled = false;
-                    InvoiceNumberTextBox.IsEnabled = true;
-                    InvoiceDatePicker.IsEnabled = false;
-                    InvoiceItemsDataGrid.IsEnabled = false;
-                    AddButton.IsEnabled = false;
-                    RemoveButton.IsEnabled = false;
-                    MenuBar.IsEnabled = true;
+                    ToggleMode("ReadOnly");
                     
-
                     for (int i = 0; i < busLog.itemInsertList.Count; i++)
                     {
                         busLog.InsertItemIntoInvoice(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceItemsDataGrid.Items.Count + 1, busLog.itemInsertList[i][0].ToString());
                         RefreshDataGrid();
                     }
+
                     busLog.itemInsertList.Clear();
                     busLog.UpdateCost(Int32.Parse(InvoiceNumberTextBox.Text));
                     InvoiceCostTextBox.Text = "$" + busLog.invoicecost.ToString();
@@ -405,6 +384,7 @@ namespace GroupProject
                             busLog.InsertItemIntoInvoice(Int32.Parse(InvoiceNumberTextBox.Text), InvoiceItemsDataGrid.Items.Count + 1, busLog.itemInsertList[i][0].ToString());
                             RefreshDataGrid();
                         }
+
                         busLog.itemInsertList.Clear();
                         busLog.UpdateCost(Int32.Parse(InvoiceNumberTextBox.Text));
                         InvoiceCostTextBox.Text = "$" + busLog.invoicecost.ToString();
@@ -414,8 +394,6 @@ namespace GroupProject
                         MenuBar.IsEnabled = true;
                     }
                 }
-
-                
             }
             catch (Exception ex)
             {
@@ -452,20 +430,7 @@ namespace GroupProject
         {
             try
             {
-                busLog.creating = true;
-
-                InvoiceNumberTextBox.IsReadOnly = true;
-                InvoiceNumberTextBox.Text = "TBD";
-                InvoiceCostTextBox.Text = "";
-
-                InvoiceDatePicker.IsEnabled = true;
-                EditInvoiceButton.IsEnabled = false;
-                RemoveButton.IsEnabled = false;
-                CreateInvoiceButton.IsEnabled = false;
-                MenuBar.IsEnabled = false;
-
-                SaveButton.IsEnabled = true;
-
+                ToggleMode("Creating");
                 InvoiceItemsDataGrid.ItemsSource = null;
                 InvoiceItemsDataGrid.Items.Clear();
             }
@@ -494,6 +459,59 @@ namespace GroupProject
                 for (int i = 0; i < busLog.itemList.Count; i++)
                 {
                     ItemsListComboBox.Items.Add(busLog.itemList[i][1]);
+                }
+            }
+            catch (Exception ex)
+            {
+                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
+                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+            }
+        }
+        /// <summary>
+        /// Activates and Deactivates certain elements based on what state the window is in
+        /// </summary>
+        /// <param name="mode"></param>
+        private void ToggleMode(string mode)
+        {
+            try
+            {
+                if (mode == "Editing")
+                {
+                    busLog.editing = true;
+                    DeleteInvoiceButton.IsEnabled = false;
+                    CreateInvoiceButton.IsEnabled = false;
+                    EditInvoiceButton.IsEnabled = false;
+                    SaveButton.IsEnabled = true;
+                    MenuBar.IsEnabled = false;
+                    InvoiceItemsDataGrid.IsEnabled = true;
+                    InvoiceNumberTextBox.IsEnabled = false;
+                    InvoiceDatePicker.IsEnabled = true;
+                }
+                else if (mode == "Creating")
+                {
+                    busLog.creating = true;
+                    InvoiceNumberTextBox.IsReadOnly = true;
+                    InvoiceNumberTextBox.Text = "TBD";
+                    InvoiceCostTextBox.Text = "";
+                    InvoiceDatePicker.IsEnabled = true;
+                    EditInvoiceButton.IsEnabled = false;
+                    RemoveButton.IsEnabled = false;
+                    CreateInvoiceButton.IsEnabled = false;
+                    MenuBar.IsEnabled = false;
+                    SaveButton.IsEnabled = true;
+                }
+                else if (mode == "ReadOnly")
+                {
+                    busLog.editing = false;
+                    busLog.creating = false;
+                    DeleteInvoiceButton.IsEnabled = true;
+                    CreateInvoiceButton.IsEnabled = true;
+                    EditInvoiceButton.IsEnabled = true;
+                    SaveButton.IsEnabled = false;
+                    MenuBar.IsEnabled = true;
+                    InvoiceItemsDataGrid.IsEnabled = false;
+                    InvoiceNumberTextBox.IsEnabled = true;
+                    InvoiceDatePicker.IsEnabled = false;
                 }
             }
             catch (Exception ex)
