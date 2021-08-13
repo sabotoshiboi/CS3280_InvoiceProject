@@ -501,6 +501,11 @@ namespace GroupProject
                     CreateInvoiceButton.IsEnabled = false;
                     MenuBar.IsEnabled = false;
                     SaveButton.IsEnabled = true;
+
+                    if(ItemsListComboBox.SelectedIndex >= 0)
+                    {
+                        AddButton.IsEnabled = true;
+                    }
                 }
                 else if (mode == "ReadOnly")
                 {

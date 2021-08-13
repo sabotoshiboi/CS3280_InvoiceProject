@@ -117,7 +117,7 @@ namespace GroupProject
                 }
                 else
                 {
-                    DateTime thisdate = new DateTime(2000, 1, 1);
+                    DateTime thisdate = new DateTime(2021, 1, 1);
                     invoicedate = thisdate;
                     invoicecost = 0;
                 }
