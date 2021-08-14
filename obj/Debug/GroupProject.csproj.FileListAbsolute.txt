@@ -101,3 +101,5 @@ C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\De
 C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject.Properties.Resources.resources
 C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject.csproj.GenerateResource.cache
 C:\Users\ET\Desktop\CS Classes\CS3280\Group Project\CS3280_InvoiceProject\obj\Debug\GroupProject.csproj.CoreCompileInputs.cache
+C:\Users\tosh_\OneDrive\Documents\GitHub\CS3280_InvoiceProject\obj\Debug\ExpressionLight.baml
+C:\Users\tosh_\OneDrive\Documents\GitHub\CS3280_InvoiceProject\obj\Debug\App.baml
