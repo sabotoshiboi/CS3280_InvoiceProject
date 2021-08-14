@@ -17,10 +17,10 @@ namespace GroupProject
         /// </summary>
         /// <param name="sInvoiceID"></param>
         /// <returns></returns>
-        public string SelectAllInvoiceData(string sInvoiceID)
+        public string SelectAllInvoiceData()
 
         {
-            string sSQL = "SELECT * FROM Invoices";
+            string sSQL = "SELECT DISTINCT * FROM Invoices";
 
             return sSQL;
 
@@ -34,7 +34,7 @@ namespace GroupProject
         public string SelectInvoiceDataSpecID(string sInvoiceID)
 
         {
-            string sSQL = "SELECT * FROM Invoices WHERE InvoiceNum = 5000";
+            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID;
 
             return sSQL;
 
@@ -48,7 +48,7 @@ namespace GroupProject
         public string SelectInvoiceDataSpecIDDate(string sInvoiceID, DateTime sDateTime)
 
         {
-            string sSQL = "SELECT* FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND InvoiceDate = #" + sDateTime + "#";
+            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND InvoiceDate = #" + sDateTime + "#";
 
             return sSQL;
 
@@ -62,7 +62,7 @@ namespace GroupProject
         public string SelectInvoiceDataSpecIDDateCost(string sInvoiceID, DateTime sDateTime, int sTotalCost)
 
         {
-            string sSQL = "SELECT* FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND InvoiceDate = #" + sDateTime + "# AND TotalCost = " + sTotalCost;
+            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND InvoiceDate = #" + sDateTime + "# AND TotalCost = " + sTotalCost;
 
             return sSQL;
 
@@ -76,7 +76,7 @@ namespace GroupProject
         public string SelectInvoiceDataSpecCost(int sTotalCost)
 
         {
-            string sSQL = "SELECT * FROM Invoices WHERE TotalCost = " + sTotalCost;
+            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE TotalCost = " + sTotalCost;
 
             return sSQL;
 
@@ -90,7 +90,7 @@ namespace GroupProject
         public string SelectInvoiceDataSpecCostDate(int sTotalCost, DateTime sDateTime)
 
         {
-            string sSQL = "SELECT* FROM Invoices WHERE TotalCost = " + sTotalCost + " AND InvoiceDate = #" + sDateTime + "#";
+            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE TotalCost = " + sTotalCost + " AND InvoiceDate = #" + sDateTime + "#";
 
             return sSQL;
 
@@ -104,7 +104,7 @@ namespace GroupProject
         public string SelectInvoiceDataSpecDate(DateTime sDateTime)
 
         {
-            string sSQL = "SELECT * FROM Invoices WHERE InvoiceDate = #" + sDateTime + "#";
+            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceDate = #" + sDateTime + "#";
 
             return sSQL;
 
