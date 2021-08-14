@@ -12,7 +12,7 @@
         <DataGrid x:Name="itemsDataGrid" Margin="150,0,0,0" SelectionMode="Single" SelectionUnit="FullRow" SelectionChanged="itemsDataGrid_SelectionChanged" IsReadOnly="True" CanUserAddRows = "false"/>
 
         <Button x:Name="editButton" Content="Edit" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="editButton_Click"/>
-        <Button x:Name="deleteButton" Content="Delete" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="deleteButton_Click" RenderTransformOrigin="0.723,-2.207"/>
+        <Button x:Name="deleteButton" Content="Delete" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="deleteButton_Click" IsEnabled="False"/>
         <Button x:Name="addButton" Content="Add" HorizontalAlignment="Left" Margin="10,364,0,0" VerticalAlignment="Top" Height="45" Width="45" Click="addButton_Click"/>
 
         <Canvas x:Name="editCtrls" HorizontalAlignment="Left" Height="188" Margin="10,60,0,0" VerticalAlignment="Top" Width="135" Visibility="Collapsed">
