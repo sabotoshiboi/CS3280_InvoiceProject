@@ -128,24 +128,6 @@ namespace GroupProject
                     addingItem = false;
                     AddingItem();
                     itemsDataGrid.ItemsSource = clsItemsSQL.SelectItemData();
-                    /*
-                     * 
-                     * THIS NEEDS WORK!!!!
-                     * ------------------------------------------------------------------------------
-                     * this is where I am tryin to update the main window with any changes to items but this code doesn't seem to work
-                     * 
-                     * 
-                    clsMainLogic.UpdateItemList();
-                    for (int i = 0; i < clsMainLogic.iret; i++)
-                    {
-                        clsMainLogic.itemList.Add(clsMainLogic.ds.Tables[0].Rows[i]);
-                    }
-
-                    for (int i = 0; i < clsMainLogic.itemList.Count; i++)
-                    {
-                        MainWindow.ItemsListComboBox.Items.Add(clsMainLogic.itemList[i][1]);
-                    }
-                    */
                 }
                 else
                     addErrorLabel.Content = "Please select a new \nunused Item Code";
@@ -204,9 +186,11 @@ namespace GroupProject
                 itemCodeLbl.Content = Item.ItemCode;
                 itemDescLbl.Content = Item.ItemDesc;
                 itemCostLbl.Content = Item.ItemCost;
+                deleteButton.IsEnabled = true;
             }
             else
             {
+                deleteButton.IsEnabled = false;
                 itemCodeLbl.Content = "";
                 itemDescLbl.Content = "";
                 itemCostLbl.Content = "";
