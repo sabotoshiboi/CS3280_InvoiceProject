@@ -187,10 +187,12 @@ namespace GroupProject
                 itemDescLbl.Content = Item.ItemDesc;
                 itemCostLbl.Content = Item.ItemCost;
                 deleteButton.IsEnabled = true;
+                editButton.IsEnabled = true;
             }
             else
             {
                 deleteButton.IsEnabled = false;
+                editButton.IsEnabled = false;
                 itemCodeLbl.Content = "";
                 itemDescLbl.Content = "";
                 itemCostLbl.Content = "";
