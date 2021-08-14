@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace GroupProject
 {
@@ -11,6 +14,23 @@ namespace GroupProject
     /// </summary>
     public class clsSearchSQL
     {
+        wndSearch wndSearch;
+
+        private clsDataAccess db;
+
+        public void HandleError(string sClass, string sMethod, string sMessage)
+        {
+            try
+            {
+                MessageBox.Show(sClass + "." + sMethod + " -> " + sMessage);
+            }
+            catch (Exception ex)
+            {
+                System.IO.File.AppendAllText("C:\\Error.txt", Environment.NewLine + "HandleError Exception: " + ex.Message);
+            }
+        }
+
+        
 
         /// <summary>
         /// SQL statement for all invoice data
@@ -20,10 +40,27 @@ namespace GroupProject
         public string SelectAllInvoiceData()
 
         {
-            string sSQL = "SELECT DISTINCT * FROM Invoices";
+            try
+            {
+                string sSQL = "SELECT DISTINCT * FROM Invoices";
+                string results = db.ExecuteScalarSQL(sSQL);
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
 
-            return sSQL;
+        string GetAllData;
 
+        /// <summary>
+        /// Getter/Setter method for GetItemList
+        /// </summary>
+        public string getAllData
+        {
+            get { return GetAllData; }
+            set { GetAllData = value; }
         }
 
         ////// <summary>
@@ -34,10 +71,16 @@ namespace GroupProject
         public string SelectInvoiceDataSpecID(string sInvoiceID)
 
         {
-            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID;
-
-            return sSQL;
-
+            try
+            {
+                string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID;
+                string results = db.ExecuteScalarSQL(sSQL);
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -48,9 +91,16 @@ namespace GroupProject
         public string SelectInvoiceDataSpecIDDate(string sInvoiceID, DateTime sDateTime)
 
         {
-            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND InvoiceDate = #" + sDateTime + "#";
-
-            return sSQL;
+            try
+            {
+                string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND InvoiceDate = #" + sDateTime + "#";
+                string results = db.ExecuteScalarSQL(sSQL);
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
 
         }
 
@@ -62,10 +112,16 @@ namespace GroupProject
         public string SelectInvoiceDataSpecIDDateCost(string sInvoiceID, DateTime sDateTime, int sTotalCost)
 
         {
-            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND InvoiceDate = #" + sDateTime + "# AND TotalCost = " + sTotalCost;
-
-            return sSQL;
-
+            try
+            {
+                string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND InvoiceDate = #" + sDateTime + "# AND TotalCost = " + sTotalCost;
+                string results = db.ExecuteScalarSQL(sSQL);
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -76,10 +132,16 @@ namespace GroupProject
         public string SelectInvoiceDataSpecCost(int sTotalCost)
 
         {
-            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE TotalCost = " + sTotalCost;
-
-            return sSQL;
-
+            try
+            {
+                string sSQL = "SELECT DISTINCT * FROM Invoices WHERE TotalCost = " + sTotalCost;
+                string results = db.ExecuteScalarSQL(sSQL);
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -90,10 +152,16 @@ namespace GroupProject
         public string SelectInvoiceDataSpecCostDate(int sTotalCost, DateTime sDateTime)
 
         {
-            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE TotalCost = " + sTotalCost + " AND InvoiceDate = #" + sDateTime + "#";
-
-            return sSQL;
-
+            try
+            {
+                string sSQL = "SELECT DISTINCT * FROM Invoices WHERE TotalCost = " + sTotalCost + " AND InvoiceDate = #" + sDateTime + "#";
+                string results = db.ExecuteScalarSQL(sSQL);
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
         /// <summary>
@@ -104,12 +172,28 @@ namespace GroupProject
         public string SelectInvoiceDataSpecDate(DateTime sDateTime)
 
         {
-            string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceDate = #" + sDateTime + "#";
-
-            return sSQL;
-
+            try
+            {
+                string sSQL = "SELECT DISTINCT * FROM Invoices WHERE InvoiceDate = #" + sDateTime + "#";
+                string results = db.ExecuteScalarSQL(sSQL);
+                return results;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
         }
 
+        //string sInvoiceID = "";
+        //string sTotalCost;
+        //string sDateTime;
+        //string allInvoices = "SELECT DISTINCT * FROM Invoices";
+        //string num = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID;
+        //string costTime = "SELECT DISTINCT * FROM Invoices WHERE TotalCost = " + sTotalCost + " AND InvoiceDate = #" + sDateTime + "#";
+        //string invTimeCost = "SELECT DISTINCT * FROM Invoices WHERE InvoiceNum = " + sInvoiceID + " AND InvoiceDate = #" + sDateTime + "# AND TotalCost = " + sTotalCost;
+        //string cost = "SELECT DISTINCT * FROM Invoices WHERE TotalCost = " + sTotalCost;
+        //string costTime = "SELECT DISTINCT * FROM Invoices WHERE TotalCost = " + sTotalCost + " AND InvoiceDate = #" + sDateTime + "#";
+        //string date = "SELECT DISTINCT * FROM Invoices WHERE InvoiceDate = #" + sDateTime + "#";
 
     }
 }
