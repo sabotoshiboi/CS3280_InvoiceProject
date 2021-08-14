@@ -82,9 +82,10 @@ namespace GroupProject
         {
             try
             {
-                SearchWindowForm = new wndSearch();
+                SearchWindowForm = new wndSearch(busLog);
                 SearchWindowForm.ShowDialog();
                 this.Show();
+                InvoiceNumberTextBox.Text = busLog.InvoiceNum.ToString();
             }
             catch (Exception ex)
             {

@@ -36,6 +36,8 @@ namespace GroupProject
 
         clsSearchLogic busLog = new clsSearchLogic();
 
+        clsMainLogic main;
+
         string InvoiceNum;
 
 
@@ -48,9 +50,11 @@ namespace GroupProject
         /// <summary>
         /// Initializes the Search window
         /// </summary>
-        public wndSearch()
+        public wndSearch(clsMainLogic mainlogic)
         {
             InitializeComponent();
+
+            main = mainlogic;
 
             //Properly shutting the window down
             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
@@ -264,6 +268,7 @@ namespace GroupProject
                 clsSearchLogic Item = (clsSearchLogic)DataGrid.SelectedItem;
                 int invoiceNum = Item.InvoiceNum;
                 LabelSelectedInvoiceNum.Content = invoiceNum.ToString();
+                main.InvoiceNum = invoiceNum;
             }
             else
             {

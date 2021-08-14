@@ -47,6 +47,9 @@ namespace GroupProject
         /// String that holds SQL statements
         /// </summary>
         string sSQL;
+
+        public int InvoiceNum;
+
         /// <summary>
         /// Setter/Getter Method for sSQL
         /// </summary>
