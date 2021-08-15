@@ -262,7 +262,7 @@ namespace GroupProject
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
                     //Add the dates into the box
-                    ComboBox2.Items.Add(ds.Tables[0].Rows[i][0].ToString());
+                    ComboBox2.Items.Add(ds.Tables[0].Rows[i][0]);
                 }
             }
             catch (Exception ex)
@@ -410,7 +410,7 @@ namespace GroupProject
 
                 if (comboDate)
                 {
-                    sql += "InvoiceDate = '" + ComboBox2.SelectedItem.ToString() + "' ";
+                    sql += "InvoiceDate = #" + ComboBox2.SelectedItem.ToString() + "# ";
 
                     if (comboCost)
                     {
