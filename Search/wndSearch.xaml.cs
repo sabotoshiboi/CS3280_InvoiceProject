@@ -46,10 +46,14 @@ namespace GroupProject
         /// </summary>
         clsMainLogic main;
 
-        string InvoiceNum;
+        DataSet ds = new DataSet();
 
+        int InvoiceNum;
 
-        public string ReturnInvoice
+        int Iref;
+        bool clearing;
+
+        public int ReturnInvoice
         {
             get { return InvoiceNum; }
             set { InvoiceNum = value; }
@@ -72,7 +76,14 @@ namespace GroupProject
             //Dataset object
             DataSet ds = new DataSet();
 
-            DataGrid.ItemsSource = busLog.SelectSearchData();
+            busLog.GetInvoices();
+
+            for(int i = 0; i < busLog.iret; i++)
+            {
+                busLog.filterList.Add(busLog.ds.Tables[0].Rows[i]);
+            }
+
+            DataGrid.ItemsSource = busLog.ds.Tables[0].DefaultView;
         }
 
         /// <summary>
@@ -84,10 +95,11 @@ namespace GroupProject
         {
             try
             {
-                clsSearchLogic Item = (clsSearchLogic)DataGrid.SelectedItem;
-                int invoiceNum = Item.InvoiceNum;
-                LabelSelectedInvoiceNum.Content = invoiceNum.ToString();
-                main.InvoiceNum = invoiceNum;
+                //clsSearchLogic Item = (clsSearchLogic)DataGrid.SelectedItem;
+                //int invoiceNum = Item.InvoiceNum;
+                //LabelSelectedInvoiceNum.Content = invoiceNum.ToString();
+                main.InvoiceNum = ReturnInvoice;
+                this.Close();
             }
             catch (Exception ex)
             {
@@ -127,7 +139,10 @@ namespace GroupProject
         {
             try
             {
-                //Here
+                if (!clearing)
+                {
+                    UpdateFromFilters();
+                }
             }
             catch (Exception ex)
             {
@@ -146,7 +161,10 @@ namespace GroupProject
             //Selects object that will be remembered when the Select button is clicked
             try
             {
-                //Here
+                if (!clearing)
+                {
+                    UpdateFromFilters();
+                }
             }
             catch (Exception ex)
             {
@@ -165,7 +183,10 @@ namespace GroupProject
             //Selects object that will be remembered when the Select button is clicked
             try
             {
-                //Here
+                if (!clearing)
+                {
+                    UpdateFromFilters();
+                }
             }
             catch (Exception ex)
             {
@@ -332,16 +353,121 @@ namespace GroupProject
         /// <param name="e"></param>
         private void DataGrid_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
-            if (DataGrid.SelectedIndex > -1)
+            try
             {
-                ButtonSelect.IsEnabled = true;
-                clsSearchLogic Item = (clsSearchLogic)DataGrid.SelectedItem;
-                int invoiceNum = Item.InvoiceNum;
-                LabelSelectedInvoiceNum.Content = invoiceNum.ToString();
+                if (DataGrid.SelectedIndex > -1)
+                {
+                    ButtonSelect.IsEnabled = true;
+
+                    ReturnInvoice = Int32.Parse(busLog.filterList[DataGrid.SelectedIndex][0].ToString());
+                    LabelSelectedInvoiceNum.Content = ReturnInvoice.ToString();
+                }
+                else
+                {
+                    LabelSelectedInvoiceNum.Content = "";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                LabelSelectedInvoiceNum.Content = "";
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        private void UpdateFromFilters()
+        {
+            bool comboInvoice = false, comboDate = false, comboCost = false;
+
+            if(ComboBox1.SelectedIndex >= 0)
+            {
+                comboInvoice = true;
+            }
+
+            if (ComboBox2.SelectedIndex >= 0)
+            {
+                comboDate = true;
+            }
+
+            if (ComboBox3.SelectedIndex >= 0)
+            {
+                comboCost = true;
+            }
+
+            string sql = "Select Distinct * From Invoices";
+
+            if(comboInvoice || comboDate || comboCost)
+            {
+                sql += " Where ";
+
+                if (comboInvoice)
+                {
+                    sql += "InvoiceNum = " + Int32.Parse(ComboBox1.SelectedItem.ToString());
+
+                    if(comboDate || comboCost)
+                    {
+                        sql += " AND ";
+                    }
+                }
+
+                if (comboDate)
+                {
+                    sql += "InvoiceDate = '" + ComboBox2.SelectedItem.ToString() + "' ";
+
+                    if (comboCost)
+                    {
+                        sql += " AND ";
+                    }
+                }
+
+                if (comboCost)
+                {
+                    sql += "TotalCost = " + Int32.Parse(ComboBox3.SelectedItem.ToString());
+
+                }
+
+            }
+
+            ds = db.ExecuteSQLStatement(sql, ref Iref);
+            RefreshDataGrid();
+        }
+
+        private void RefreshDataGrid()
+        {
+           
+
+            DataGrid.ItemsSource = ds.Tables[0].DefaultView;
+
+            busLog.filterList.Clear();
+
+            for(int i = 0; i < Iref; i++)
+            {
+                busLog.filterList.Add(ds.Tables[0].Rows[i]);
+            }
+
+            clearing = true;
+            ComboBox1.Items.Clear();
+            clearing = false;
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                ComboBox1.Items.Add(ds.Tables[0].Rows[i][0]);
+            }
+
+            clearing = true;
+            ComboBox2.Items.Clear();
+            clearing = false;
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                ComboBox2.Items.Add(ds.Tables[0].Rows[i][1]);
+            }
+
+            clearing = true;
+            ComboBox3.Items.Clear();
+            clearing = false;
+
+            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            {
+                ComboBox3.Items.Add(ds.Tables[0].Rows[i][2]);
             }
         }
     }

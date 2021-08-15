@@ -13,7 +13,7 @@ namespace GroupProject
 {
     public class clsSearchLogic
     {
-        private clsDataAccess db;
+        private clsDataAccess db = new clsDataAccess();
         /// <summary>
         /// Instance of the Data Set Class
         /// </summary>
@@ -34,6 +34,8 @@ namespace GroupProject
         /// Instance of the Item List
         /// </summary>
         public List<DataRow> costList = new List<DataRow>();
+
+        public List<DataRow> filterList = new List<DataRow>();
 
         /// <summary>
         /// Holds InvoiceNum
@@ -176,5 +178,13 @@ namespace GroupProject
                 throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
+
+        public void GetInvoices()
+        {
+            SSQL = sqlString.SelectAllInvoiceData();
+            ds = db.ExecuteSQLStatement(SSQL, ref IRet);
+        }
+
+       
     }
 }

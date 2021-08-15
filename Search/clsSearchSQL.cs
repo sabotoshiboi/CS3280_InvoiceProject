@@ -42,9 +42,8 @@ namespace GroupProject
         {
             try
             {
-                string sSQL = "SELECT DISTINCT * FROM Invoices";
-                string results = db.ExecuteScalarSQL(sSQL);
-                return results;
+                return "SELECT DISTINCT * FROM Invoices";
+                
             }
             catch (Exception ex)
             {
@@ -183,6 +182,8 @@ namespace GroupProject
                 throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
+
+        
 
         //string sInvoiceID = "";
         //string sTotalCost;
