@@ -35,10 +35,17 @@ namespace GroupProject
         /// </summary>
         public List<DataRow> costList = new List<DataRow>();
 
-        public clsMainLogic mainLogic = new clsMainLogic();
-
+        /// <summary>
+        /// Holds InvoiceNum
+        /// </summary>
         private int invoiceNum;
+        /// <summary>
+        /// Holds InvoiceDate
+        /// </summary>
         private string invoiceDate;
+        /// <summary>
+        /// Holds totalCost
+        /// </summary>
         private int totalCost;
 
         /// <summary>
@@ -59,6 +66,7 @@ namespace GroupProject
         /// String that holds SQL statements
         /// </summary>
         string sSQL;
+
         /// <summary>
         /// Setter/Getter Method for sSQL
         /// </summary>
@@ -68,29 +76,47 @@ namespace GroupProject
             set { sSQL = value; }
         }
 
+        /// <summary>
+        /// Setter/Getter Method for the InvoiceNum
+        /// </summary>
         public int InvoiceNum
         {
             get { return invoiceNum; }
             set { invoiceNum = value; }
         }
 
+        /// <summary>
+        /// Setter/Getter Method for the InvoiceDate
+        /// </summary>
         public string InvoiceDate
         {
             get { return invoiceDate; }
             set { invoiceDate = value; }
         }
 
+        /// <summary>
+        /// Setter/Getter Method for the TotalCost
+        /// </summary>
         public int TotalCost
         {
             get { return totalCost; }
             set { totalCost = value; }
         }
 
+        /// <summary>
+        /// Overriding the ToString() method
+        /// </summary>
         public override string ToString()
         {
             return InvoiceNum + " | " + InvoiceDate + " | " + TotalCost;
         }
 
+        /// <summary>
+        /// Error handler
+        /// </summary>
+        /// <param name="sClass"></param>
+        /// <param name="sMethod"></param>
+        /// <param name="sMessage"></param>
         public void HandleError(string sClass, string sMethod, string sMessage)
         {
             try
@@ -104,22 +130,8 @@ namespace GroupProject
         }
 
         /// <summary>
-        /// Reloads the item list with all the items in the database
+        /// Select search data logic for a selected invoice
         /// </summary>
-        public void UpdateInvoiceList()
-        {
-            try
-            {
-                //SSQL = sqlString.getItemList;
-                ds = db.ExecuteSQLStatement(SSQL, ref IRet);
-            }
-            catch (Exception ex)
-            {
-                HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
-            }
-        }
-
         public List<clsSearchLogic> SelectSearchData()
         {
             try
@@ -133,10 +145,10 @@ namespace GroupProject
                 //create items list
                 List<clsSearchLogic> lstInvoices = new List<clsSearchLogic>();
 
-                //create the string variable holding the SQL statement to get flgiths
+                //create the string variable holding the SQL statement to get invoices
                 string sSQL;
 
-                //creating a clsFlight object to hold flight dataset
+                //creating a clsFlight object to hold invoice dataset
                 clsSearchLogic clsSearchLogic;
 
                 //defining a database to hold the row slected by the SQL
@@ -149,7 +161,7 @@ namespace GroupProject
                 //loop through all the values
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    //create list of flights
+                    //create list of invoices
                     clsSearchLogic = new clsSearchLogic();
                     clsSearchLogic.InvoiceNum = Convert.ToInt32(ds.Tables[0].Rows[i][0]);
                     clsSearchLogic.InvoiceDate = ds.Tables[0].Rows[i]["InvoiceDate"].ToString();
@@ -164,22 +176,5 @@ namespace GroupProject
                 throw new Exception(MethodBase.GetCurrentMethod().DeclaringType.Name + "." + MethodBase.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
-
-
     }
-
-    //InvoiceNum = box1 data
-    //InvoiceDate = box2 data
-    //TotalCost = box3 data
-
-    //string boxString1;
-    //string boxString2;
-    //string boxString3;
-
-    //SelectInvoiceDataSpecID(boxString1)
-    //SelectInvoiceDataSpecIDDate(boxString2)
-    //SelectInvoiceDataSpecCost(boxString3)
-    //SelectInvoiceDataSpecIDDate(boxString1, boxString2)
-    //SelectInvoiceDataSpecIDDateCost(boxString1, boxString2, boxString3)
-    //SelectInvoiceDataSpecDateCost(boxString2, boxString3)
 }

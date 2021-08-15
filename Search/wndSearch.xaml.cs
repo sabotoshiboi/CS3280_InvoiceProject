@@ -30,12 +30,20 @@ namespace GroupProject
         /// <summary>
         /// Data access class
         /// </summary>
-        clsDataAccess db;
-
+        private clsDataAccess db = new clsDataAccess();
+        /// <summary>
+        /// Search SQL class access
+        /// </summary>
         clsSearchSQL clsSearchSQL = new clsSearchSQL();
 
+        /// <summary>
+        /// BusLog to acces logic
+        /// </summary>
         clsSearchLogic busLog = new clsSearchLogic();
 
+        /// <summary>
+        /// Main access
+        /// </summary>
         clsMainLogic main;
 
         string InvoiceNum;
@@ -53,7 +61,9 @@ namespace GroupProject
         public wndSearch(clsMainLogic mainlogic)
         {
             InitializeComponent();
-
+            LoadComboBox1();
+            LoadComboBox2();
+            LoadComboBox3();
             main = mainlogic;
 
             //Properly shutting the window down
@@ -72,17 +82,12 @@ namespace GroupProject
         /// <param name="e"></param>
         private void ButtonSelect_Click(object sender, RoutedEventArgs e)
         {
-            //On the final draft, this will cause the program to select a certain invoice that will be returned to the main menu 
-            //by being passed as an object
-            string invoice;
-
             try
             {
-                clsSearchLogic Invoice = (clsSearchLogic)DataGrid.SelectedItem;
-                invoice = LabelSelectedInvoiceNum.Content.ToString();
-                InvoiceNum = invoice;
-
-                //Don't pay too much attention to the syntax right now.
+                clsSearchLogic Item = (clsSearchLogic)DataGrid.SelectedItem;
+                int invoiceNum = Item.InvoiceNum;
+                LabelSelectedInvoiceNum.Content = invoiceNum.ToString();
+                main.InvoiceNum = invoiceNum;
             }
             catch (Exception ex)
             {
@@ -120,13 +125,9 @@ namespace GroupProject
         /// <param name="e"></param>
         private void ComboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //While selecting a date or total, the combo box is reset for the invoice number
-            //while selecting the invoice number, both other boxes are reset
-
-            //Selects object that will be remembered when the Select button is clicked
             try
             {
-
+                //Here
             }
             catch (Exception ex)
             {
@@ -145,7 +146,7 @@ namespace GroupProject
             //Selects object that will be remembered when the Select button is clicked
             try
             {
-
+                //Here
             }
             catch (Exception ex)
             {
@@ -164,7 +165,7 @@ namespace GroupProject
             //Selects object that will be remembered when the Select button is clicked
             try
             {
-
+                //Here
             }
             catch (Exception ex)
             {
@@ -173,11 +174,16 @@ namespace GroupProject
             }
         }
 
+        /// <summary>
+        /// Selection change makes submit button available
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
             {
-
+                ButtonSelect.IsEnabled = true;
             }
             catch (Exception ex)
             {
@@ -186,89 +192,152 @@ namespace GroupProject
             }
         }
 
+        /// <summary>
+        /// Loads combo box 1 with invoice numbers
+        /// </summary>
         private void LoadComboBox1()
         {
             try
             {
-                ComboBox1.Items.Clear();
-                busLog.invoiceList.Clear();
-                busLog.SelectSearchData();
+                //Create a DataSet to hold the data
+                DataSet ds;
 
-                for (int i = 0; i < busLog.iret; i++)
-                {
-                    busLog.invoiceList.Add(busLog.ds.Tables[0].Rows[i]);
-                }
+                //Number of return values
+                int iRet = 0;
 
-                for (int i = 0; i < busLog.invoiceList.Count; i++)
+                //Get all invoice numbers
+                ds = db.ExecuteSQLStatement("SELECT InvoiceNum FROM Invoices", ref iRet);
+
+                //Loop through all the values returned
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    ComboBox1.Items.Add(busLog.invoiceList[i][1]);
+                    //Add the invoices to the box
+                    ComboBox1.Items.Add(ds.Tables[0].Rows[i][0].ToString());
                 }
             }
             catch (Exception ex)
             {
-                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
+        /// <summary>
+        /// Loads combo box 2 with dates
+        /// </summary>
         private void LoadComboBox2()
         {
             try
             {
-                ComboBox2.Items.Clear();
-                busLog.dateList.Clear();
-                busLog.SelectSearchData();
+                //Create a DataSet to hold the data
+                DataSet ds;
 
-                for (int i = 0; i < busLog.iret; i++)
-                {
-                    busLog.dateList.Add(busLog.ds.Tables[0].Rows[i]);
-                }
+                //Number of return values
+                int iRet = 0;
 
-                for (int i = 0; i < busLog.dateList.Count; i++)
+                //Get all invoice dates
+                ds = db.ExecuteSQLStatement("SELECT InvoiceDate FROM Invoices", ref iRet);
+
+                //Loop through all the values returned
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    ComboBox2.Items.Add(busLog.dateList[i][1]);
+                    //Add the dates into the box
+                    ComboBox2.Items.Add(ds.Tables[0].Rows[i][0].ToString());
                 }
             }
             catch (Exception ex)
             {
-                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
+        /// <summary>
+        /// Loads combo box 3 with total costs
+        /// </summary>
         private void LoadComboBox3()
         {
             try
             {
-                ComboBox3.Items.Clear();
-                busLog.costList.Clear();
-                busLog.SelectSearchData();
+                //Create a DataSet to hold the data
+                DataSet ds;
 
-                for (int i = 0; i < busLog.iret; i++)
-                {
-                    busLog.costList.Add(busLog.ds.Tables[0].Rows[i]);
-                }
+                //Number of return values
+                int iRet = 0;
 
-                for (int i = 0; i < busLog.costList.Count; i++)
+                //Get all invoice numbers
+                ds = db.ExecuteSQLStatement("SELECT TotalCost FROM Invoices", ref iRet);
+
+                //Loop through all the values returned
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    ComboBox3.Items.Add(busLog.costList[i][1]);
+                    //Add the totals into the box
+                    ComboBox3.Items.Add(ds.Tables[0].Rows[i][0].ToString());
                 }
             }
             catch (Exception ex)
             {
-                busLog.HandleError(MethodInfo.GetCurrentMethod().DeclaringType.Name,
-                    MethodInfo.GetCurrentMethod().Name, ex.Message);
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
             }
         }
 
+        /// <summary>
+        /// Empties combo box 1
+        /// </summary>
+        private void EmptyComboBox1()
+        {
+            try
+            {
+                ComboBox1.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Empties combo box 2
+        /// </summary>
+        private void EmptyComboBox2()
+        {
+            try
+            {
+                ComboBox2.SelectedIndex = -1;
+                
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Empties combo box 3
+        /// </summary>
+        private void EmptyComboBox3()
+        {
+            try
+            {
+                ComboBox3.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(MethodInfo.GetCurrentMethod().DeclaringType.Name + "." + MethodInfo.GetCurrentMethod().Name + " -> " + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Makes the button select enabled
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DataGrid_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
         {
             if (DataGrid.SelectedIndex > -1)
             {
+                ButtonSelect.IsEnabled = true;
                 clsSearchLogic Item = (clsSearchLogic)DataGrid.SelectedItem;
                 int invoiceNum = Item.InvoiceNum;
                 LabelSelectedInvoiceNum.Content = invoiceNum.ToString();
-                main.InvoiceNum = invoiceNum;
             }
             else
             {

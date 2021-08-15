@@ -7,7 +7,7 @@
         <ComboBox x:Name="ComboBox2" HorizontalAlignment="Left" Margin="253,126,0,0" VerticalAlignment="Top" Width="168" SelectionChanged="ComboBox2_SelectionChanged"/>
         <ComboBox x:Name="ComboBox3" HorizontalAlignment="Left" Margin="253,200,0,0" VerticalAlignment="Top" Width="168" SelectionChanged="ComboBox3_SelectionChanged"/>
         <DataGrid x:Name="DataGrid" HorizontalAlignment="Left" Height="247" Margin="10,20,0,0" VerticalAlignment="Top" Width="238" IsReadOnly="True" SelectionChanged="DataGrid_SelectionChanged_1"/>
-        <Button x:Name="ButtonSelect" Content="Select" HorizontalAlignment="Left" Margin="10,322,0,0" VerticalAlignment="Top" Width="150" Height="49" Click="ButtonSelect_Click"/>
+        <Button x:Name="ButtonSelect" Content="Select" HorizontalAlignment="Left" Margin="10,322,0,0" VerticalAlignment="Top" Width="150" Height="49" Click="ButtonSelect_Click" IsEnabled="False"/>
         <Button x:Name="ButtonCancel" Content="Cancel" HorizontalAlignment="Left" Margin="271,322,0,0" VerticalAlignment="Top" Width="150" Height="49" Click="ButtonCancel_Click"/>
         <Label x:Name="LabelInvoiceNum" Content="Invoice Number" HorizontalAlignment="Left" Margin="253,20,0,0" VerticalAlignment="Top"/>
         <Label x:Name="LabelDate" Content="Invoice Date" HorizontalAlignment="Left" Margin="253,100,0,0" VerticalAlignment="Top"/>
